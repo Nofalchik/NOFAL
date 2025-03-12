@@ -101,26 +101,55 @@
 }
 
         }
-       .menu a {
-    font-size: 2.5rem; /* Сделал текст крупнее */
+      .menu a {
+    font-size: 3rem; /* Увеличил размер текста */
     text-decoration: none;
-    padding: 20px 40px; /* Увеличил размер кнопок */
+    padding: 20px 50px; /* Сделал кнопки больше */
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.8); /* Сделал фон темнее */
-    color: #00ffcc;
-    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 3px; /* Увеличил расстояние между буквами */
-    border: 2px solid #00ffcc; /* Добавил неоновую рамку */
+    letter-spacing: 3px;
+    border: 3px solid transparent;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, color 0.3s ease-in-out, text-shadow 0.5s ease-in-out, border-color 0.5s ease-in-out;
+    animation: neonGlow 5s infinite alternate;
 }
 
-.menu a:hover {
-    background: #00ffcc;
-    color: #000000;
-    transform: scale(1.3); /* Сделал эффект увеличения сильнее */
-    text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc, 0 0 60px #00ffcc; /* Добавил яркий неоновый эффект */
+/* Уникальные цвета для каждого пункта */
+.menu a:nth-child(1) { /* About Me */
+    border-color: #ff00ff;
+    animation: neonGlowPink 3s infinite alternate;
 }
+.menu a:nth-child(2) { /* Socials */
+    border-color: #00ffcc;
+    animation: neonGlowBlue 3s infinite alternate;
+}
+.menu a:nth-child(3) { /* Shop */
+    border-color: #ffcc00;
+    animation: neonGlowYellow 3s infinite alternate;
+}
+
+/* Анимации неонового свечения */
+@keyframes neonGlowPink {
+    0% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
+    100% { text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+}
+@keyframes neonGlowBlue {
+    0% { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc; }
+    100% { text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc; }
+}
+@keyframes neonGlowYellow {
+    0% { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; }
+    100% { text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00; }
+}
+
+/* Hover-эффект */
+.menu a:hover {
+    transform: scale(1.3);
+    background: rgba(255, 255, 255, 0.2);
+}
+
 
         @media (max-width: 768px) {
             .menu {
