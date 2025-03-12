@@ -107,7 +107,7 @@
             transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
         }
         .menu a.active {
-            color: #ffffff; /* Белый цвет для активного раздела */
+            color: #ffffff;
             opacity: 1;
         }
         .menu a::after {
@@ -150,17 +150,19 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            padding: 100px 20px 50px; /* Отступ сверху увеличен для выравнивания */
+            padding: 100px 20px 50px;
             position: relative;
             z-index: 5;
             font-family: 'Orbitron', sans-serif;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            min-height: 100vh; /* Чтобы магазин занимал всю высоту */
+            transform: translateY(20px); /* Начальное смещение вниз */
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out; /* Плавный переход */
+            min-height: 100vh;
         }
         .shop-container.active {
             display: flex;
             opacity: 1;
+            transform: translateY(0); /* Поднимается на место */
         }
         .beat {
             background: rgba(0, 0, 0, 0.7);
@@ -413,7 +415,7 @@
             }, 400);
         }
 
-        // Показ магазина
+        // Показ магазина с анимацией
         function showShop(event, link) {
             event.preventDefault();
             resetMenuColors();
