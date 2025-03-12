@@ -141,8 +141,8 @@
 
         window.addEventListener("deviceorientation", (event) => {
             const background = document.getElementById("background");
-            let moveX = event.gamma * 2;
-            let moveY = event.beta * 2;
+            let moveX = event.gamma * 1.5;
+            let moveY = event.beta * 1.5;
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
