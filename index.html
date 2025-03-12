@@ -20,7 +20,7 @@
             position: fixed;
             width: 100%;
             height: 100vh;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(2px);
             transition: backdrop-filter 1s ease-in-out;
             z-index: -1;
         }
@@ -86,7 +86,7 @@
             transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
         }
         .menu a:hover {
-            background: rgba(0, 255, 204, 0.8);
+            background: rgba(255, 255, 255, 0.8);
             transform: scale(1.1);
         }
         @media (max-width: 768px) {
@@ -154,7 +154,7 @@
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
                     this.size = Math.random() * 3 + 1;
-                    this.speedY = Math.random() * 1.5 + 0.5;
+                    this.speedY = Math.random() * 0.8 + 0.3;
                 }
                 update() {
                     this.y += this.speedY;
@@ -172,7 +172,7 @@
             }
             function init() {
                 particlesArray = [];
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 150; i++) {
                     particlesArray.push(new Particle());
                 }
             }
@@ -187,7 +187,7 @@
             init();
             animate();
         }
-        createParticles("rgba(0,255,204,0.8)");
+        createParticles("rgba(255,255,255,0.9)");
     </script>
 </body>
 </html>
