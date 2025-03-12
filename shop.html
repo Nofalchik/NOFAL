@@ -8,7 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400&display=swap');
         body {
             font-family: 'Orbitron', sans-serif;
-            background: url('background.jpg') no-repeat center center fixed, #1a1a1a;
+            background: url('background.jpg') no-repeat center center, #1a1a1a;
             background-size: cover;
             color: #ffffff;
             text-align: center;
@@ -16,6 +16,7 @@
             padding: 0;
             overflow-x: hidden;
             animation: breathe 10s infinite ease-in-out;
+            min-height: 100vh; /* Полная высота экрана */
         }
         .shop-container {
             display: flex;
@@ -146,26 +147,36 @@
         .touch-hint {
             display: none;
             position: fixed;
-            bottom: 20px; /* В самом низу экрана */
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 255, 204, 0.2);
-            color: #00ffcc;
+            background: linear-gradient(45deg, #00ffcc, #00ffaa, #00ffcc);
+            background-size: 200% 200%;
+            color: #000; /* Чёрный текст для контраста с градиентом */
             padding: 8px 15px;
             border-radius: 10px;
             font-size: 1rem;
-            text-shadow: 0 0 5px #00ffcc;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
             z-index: 10;
             opacity: 0;
-            transition: opacity 0.3s ease; /* Плавное появление/исчезновение */
+            transition: opacity 0.3s ease;
+            animation: neonGradient 3s infinite ease-in-out; /* Неоновая анимация */
         }
         .touch-hint.visible {
             display: block;
             opacity: 1;
         }
-        /* Показываем только на телефонах */
+        @keyframes neonGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Адаптация фона и подсказки для телефонов */
         @media (max-width: 768px) {
+            body {
+                background-size: 100% 100%; /* Растягиваем фон на весь экран */
+            }
             .beat { width: 90%; max-width: 300px; margin: 0 auto; }
             .beat h3 { font-size: 1.2rem; }
             .beat p { font-size: 1rem; }
@@ -310,7 +321,7 @@
                         audio.currentTime = 0;
                         audio.play();
                         isAnyBeatPlaying = true;
-                        touchHint.classList.remove('visible'); // Скрываем подсказку
+                        touchHint.classList.remove('visible');
                     }
                 });
                 beat.addEventListener('touchend', () => {
@@ -318,7 +329,7 @@
                         audio.pause();
                         audio.currentTime = 0;
                         isAnyBeatPlaying = false;
-                        touchHint.classList.add('visible'); // Показываем подсказку
+                        touchHint.classList.add('visible');
                     }
                 });
             });
