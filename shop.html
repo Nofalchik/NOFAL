@@ -14,7 +14,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         .shop-container {
             display: flex;
@@ -33,6 +33,7 @@
             width: 300px;
             box-shadow: 0 0 10px #00ffcc;
             transition: 0.3s;
+            box-sizing: border-box;
         }
         .beat:hover {
             box-shadow: 0 0 20px #00ffaa;
@@ -48,8 +49,7 @@
             margin: 5px 0;
         }
         .beat audio {
-            width: 100%;
-            margin-top: 10px;
+            display: none;
         }
         .beat button {
             background: #00ffcc;
@@ -60,13 +60,15 @@
             font-size: 1rem;
             border-radius: 5px;
             transition: 0.3s;
+            width: 100%;
+            box-sizing: border-box;
         }
         .beat button:hover {
             background: #00ffaa;
         }
         .back-button {
             display: inline-block;
-            margin-top: 20px;
+            margin: 20px 0;
             padding: 10px 20px;
             background: #00ffcc;
             color: #000;
@@ -90,6 +92,73 @@
             height: 100%;
             z-index: -1;
         }
+        /* Эквалайзер */
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 40px;
+            width: 100px;
+            margin: 10px auto;
+        }
+        .bar {
+            width: 8px;
+            height: 10px;
+            background: #00ffcc;
+            margin: 0 3px;
+            border-radius: 5px;
+            transition: height 0.1s;
+            box-shadow: 0 0 5px #00ffcc;
+        }
+        .beat:hover .bar:nth-child(1) {
+            height: 30px;
+            animation: bounce 0.5s infinite alternate, glow 0.5s infinite alternate;
+        }
+        .beat:hover .bar:nth-child(2) {
+            height: 20px;
+            animation: bounce 0.4s infinite alternate, glow 0.4s infinite alternate;
+        }
+        .beat:hover .bar:nth-child(3) {
+            height: 35px;
+            animation: bounce 0.6s infinite alternate, glow 0.6s infinite alternate;
+        }
+        .beat:hover .bar:nth-child(4) {
+            height: 25px;
+            animation: bounce 0.5s infinite alternate, glow 0.5s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { height: 10px; }
+            100% { height: 35px; }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #00ffcc; }
+            100% { box-shadow: 0 0 15px #00ffaa; }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .beat { width: 90%; max-width: 300px; margin: 0 auto; }
+            .beat h3 { font-size: 1.2rem; }
+            .beat p { font-size: 1rem; }
+            .beat button { padding: 8px 10px; font-size: 0.9rem; }
+            .shop-container { padding: 20px 10px; gap: 15px; }
+            .equalizer { height: 30px; width: 80px; }
+            .bar { width: 6px; margin: 0 2px; }
+            .beat:hover .bar:nth-child(1) { height: 25px; }
+            .beat:hover .bar:nth-child(2) { height: 15px; }
+            .beat:hover .bar:nth-child(3) { height: 30px; }
+            .beat:hover .bar:nth-child(4) { height: 20px; }
+            @keyframes bounce { 0% { height: 8px; } 100% { height: 30px; } }
+            .back-button { font-size: 1rem; padding: 8px 15px; }
+            h1 { font-size: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .beat { width: 100%; }
+            .beat h3 { font-size: 1rem; }
+            .beat p { font-size: 0.9rem; }
+            .equalizer { height: 25px; width: 60px; }
+            .bar { width: 5px; margin: 0 1px; }
+        }
     </style>
     <script>
         function buyBeat(beatName) {
@@ -103,67 +172,133 @@
             canvas.height = window.innerHeight;
 
             const particles = [];
-            for (let i = 0; i < 100; i++) {
+            const particleCount = 30; // Меньше частиц для эффекта редкой пыли
+            let mouseX = null; // Мышь не активна по умолчанию
+            let mouseY = null;
+
+            // Создание частиц-пыли
+            for (let i = 0; i < particleCount; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 3 + 1,
-                    speedX: Math.random() * 2 - 1,
-                    speedY: Math.random() * 2 - 1
+                    y: Math.random() * -canvas.height - 50, // Начинаются выше экрана
+                    radius: Math.random() * 1 + 0.5, // Маленькие
+                    speedY: Math.random() * 0.3 + 0.1, // Очень медленное падение
+                    driftX: (Math.random() - 0.5) * 0.05 // Естественное колебание
                 });
             }
 
+            // Отслеживание мыши
+            canvas.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            canvas.addEventListener('mouseleave', () => {
+                mouseX = null; // Отключаем влияние, если мышь ушла
+                mouseY = null;
+            });
+
+            // Отслеживание касаний
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                mouseX = touch.clientX;
+                mouseY = touch.clientY;
+            });
+            canvas.addEventListener('touchend', () => {
+                mouseX = null;
+                mouseY = null;
+            });
+
             function drawParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#00ffcc";
+                ctx.fillStyle = "#b0c4de"; // Цвет пыли с лёгким голубым оттенком (LightSteelBlue)
+
                 particles.forEach(p => {
+                    // Лёгкое влияние мыши
+                    if (mouseX !== null && mouseY !== null) {
+                        const dx = mouseX - p.x;
+                        const dy = mouseY - p.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < 300) { // Влияние в радиусе 300px
+                            p.driftX += dx / distance * 0.02; // Очень слабое смещение
+                        }
+                    }
+
+                    // Движение частиц
+                    p.x += p.driftX;
+                    p.y += p.speedY;
+                    p.driftX *= 0.98; // Затухание горизонтального движения
+
+                    // Если частица упала ниже экрана, переместить вверх
+                    if (p.y > canvas.height + 50) {
+                        p.y = Math.random() * -canvas.height - 50;
+                        p.x = Math.random() * canvas.width;
+                        p.driftX = (Math.random() - 0.5) * 0.05;
+                    }
+
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                     ctx.fill();
-                    p.x += p.speedX;
-                    p.y += p.speedY;
-                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
                 });
                 requestAnimationFrame(drawParticles);
             }
             drawParticles();
 
-            // Добавляем предпрослушивание при наведении
+            // Предпрослушивание при наведении
             const beats = document.querySelectorAll('.beat');
             beats.forEach(beat => {
                 const audio = beat.querySelector('audio');
                 beat.addEventListener('mouseover', () => {
-                    audio.currentTime = 0; // Начинаем с начала
+                    audio.currentTime = 0;
                     audio.play();
                 });
                 beat.addEventListener('mouseout', () => {
                     audio.pause();
-                    audio.currentTime = 0; // Сбрасываем на начало
+                    audio.currentTime = 0;
+                });
+                beat.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    audio.currentTime = 0;
+                    audio.play();
+                });
+                beat.addEventListener('touchend', () => {
+                    audio.pause();
+                    audio.currentTime = 0;
                 });
             });
         }
     </script>
 </head>
 <body>
-    <canvas id="particles"></canvas>
+    <canvas id="particles></canvas>
     <h1>Beat Store</h1>
     <div class="shop-container">
         <div class="beat">
             <h3>Beat 1</h3>
             <p>$5</p>
-            <audio controls controlsList="nodownload">
+            <audio>
                 <source src="guitar.mp3" type="audio/mpeg">
             </audio>
+            <div class="equalizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
-        <!-- Для теста добавлю ещё один бит -->
         <div class="beat">
             <h3>Beat 2</h3>
             <p>$10</p>
-            <audio controls controlsList="nodownload">
+            <audio>
                 <source src="beat2.mp3" type="audio/mpeg">
             </audio>
+            <div class="equalizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
             <button onclick="buyBeat('Beat 2')">Buy Now</button>
         </div>
     </div>
