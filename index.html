@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOFAL</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Raleway:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
         body {
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Inter', sans-serif;
             color: #ffffff;
             text-align: center;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #1a1a1a; /* Запасной цвет */
+            background-color: #1a1a1a;
         }
         .background-container {
             position: fixed;
-            width: 200%; /* Увеличил до 200% */
-            height: 200vh; /* Увеличил до 200vh */
+            width: 200%;
+            height: 200vh;
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
@@ -44,7 +44,7 @@
         }
         .intro h1 {
             font-size: 5rem;
-            font-weight: bold;
+            font-weight: 600;
             color: #00ffcc;
             cursor: pointer;
             opacity: 0;
@@ -72,7 +72,7 @@
             transform: translateX(-50%);
             font-size: 1.2rem;
             color: #ffffff;
-            text-shadow: 0 0 5px #000000; /* Тень для контраста */
+            text-shadow: 0 0 5px #000000;
             animation: blink 1.5s infinite;
             z-index: 11;
         }
@@ -82,45 +82,51 @@
         }
         .menu {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
+            top: 20px; /* Отступ сверху */
+            left: 70px; /* Отступ слева с местом для логотипа */
             display: flex;
-            justify-content: space-between;
-            gap: 20px;
+            gap: 30px; /* Расстояние между пунктами */
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 12; /* Выше всего */
         }
         .menu.active {
             opacity: 1;
             pointer-events: auto;
         }
         .menu a {
-            font-size: 2rem;
+            font-size: 1.2rem; /* Небольшой размер, как на xAI */
+            font-weight: 600;
+            color: #ffffff;
+            opacity: 0.9; /* Лёгкая прозрачность */
             text-decoration: none;
-            padding: 20px 50px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: neonFlicker 3s infinite;
+            position: relative;
+            transition: opacity 0.3s ease-in-out;
         }
-        .menu a:nth-child(1) {
-            color: #ff0000;
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffffff;
+            transition: width 0.3s ease-in-out;
         }
-        .menu a:nth-child(2) {
-            color: #00ff00;
-sess        }
-        .menu a:nth-child(3) {
-            color: #0000ff;
+        .menu a:hover::after {
+            width: 100%; /* Линия растёт при наведении */
         }
         .menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.2);
+            opacity: 1; /* Полная видимость при наведении */
+        }
+        .menu a:active {
+            animation: clickFade 0.4s ease-out forwards; /* Анимация при клике */
+        }
+        @keyframes clickFade {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+            100% { opacity: 0; transform: scale(1); }
         }
         canvas {
             position: fixed;
@@ -132,22 +138,25 @@ sess        }
         }
         @media (max-width: 768px) {
             .menu {
-                flex-direction: column;
-                align-items: center;
-                top: 50%;
+                top: 15px;
+                left: 60px;
+                gap: 20px;
             }
             .menu a {
-                font-size: 1.5rem;
-                padding: 15px 30px;
+                font-size: 1rem;
             }
         }
         @media (max-width: 480px) {
             .intro h1 {
                 font-size: 3rem;
             }
+            .menu {
+                top: 10px;
+                left: 50px;
+                gap: 15px;
+            }
             .menu a {
-                font-size: 1.2rem;
-                padding: 10px 20px;
+                font-size: 0.9rem;
             }
             .hint {
                 font-size: 1rem;
@@ -165,20 +174,19 @@ sess        }
         <div class="hint" id="hint">Click</div>
     </div>
     <div class="menu" id="menu">
-        <a href="bio.html">About Me</a>
-        <a href="socials.html">Socials</a>
-        <a href="shop.html">Shop</a>
+        <a href="bio.html" onclick="handleMenuClick(event)">About Me</a>
+        <a href="socials.html" onclick="handleMenuClick(event)">Socials</a>
+        <a href="shop.html" onclick="handleMenuClick(event)">Shop</a>
     </div>
 
     <script>
-        // Движение фона с ограничением
+        // Движение фона
         document.addEventListener("mousemove", (e) => {
             const background = document.getElementById("background");
-            let moveX = (e.clientX / window.innerWidth - 0.5) * 10; // Замедленное движение
+            let moveX = (e.clientX / window.innerWidth - 0.5) * 10;
             let moveY = (e.clientY / window.innerHeight - 0.5) * 10;
-            // Ограничиваем смещение
-            moveX = Math.max(Math.min(moveX, 50), -50); // Лимит ±50px
-            moveY = Math.max(Math.min(moveY, 50), -50); // Лимит ±50px
+            moveX = Math.max(Math.min(moveX, 50), -50);
+            moveY = Math.max(Math.min(moveY, 50), -50);
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
         document.addEventListener("touchmove", (e) => {
@@ -186,9 +194,8 @@ sess        }
             const background = document.getElementById("background");
             let moveX = (touch.clientX / window.innerWidth - 0.5) * 10;
             let moveY = (touch.clientY / window.innerHeight - 0.5) * 10;
-            // Ограничиваем смещение
-            moveX = Math.max(Math.min(moveX, 50), -50); // Лимит ±50px
-            moveY = Math.max(Math.min(moveY, 50), -50); // Лимит ±50px
+            moveX = Math.max(Math.min(moveX, 50), -50);
+            moveY = Math.max(Math.min(moveY, 50), -50);
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
@@ -197,10 +204,10 @@ sess        }
         function updateHint() {
             if (window.innerWidth <= 768) {
                 hint.textContent = "Tap";
-                console.log("Switched to Tap"); // Для отладки
+                console.log("Switched to Tap");
             } else {
                 hint.textContent = "Click";
-                console.log("Switched to Click"); // Для отладки
+                console.log("Switched to Click");
             }
         }
         updateHint();
@@ -215,6 +222,16 @@ sess        }
                 intro.style.display = "none";
                 menu.classList.add("active");
             }, 1000);
+        }
+
+        // Анимация клика по пункту меню
+        function handleMenuClick(event) {
+            event.preventDefault();
+            const link = event.target;
+            link.classList.add("active");
+            setTimeout(() => {
+                window.location.href = link.href;
+            }, 400); // Длительность анимации clickFade
         }
 
         // Анимация снежинок
