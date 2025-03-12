@@ -14,6 +14,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
         .shop-container {
             display: flex;
@@ -21,6 +22,8 @@
             justify-content: center;
             gap: 20px;
             padding: 50px 20px;
+            position: relative;
+            z-index: 1;
         }
         .beat {
             background: rgba(0, 0, 0, 0.7);
@@ -73,6 +76,8 @@
             text-decoration: none;
             box-shadow: 0 0 10px #00ffcc;
             transition: 0.3s;
+            position: relative;
+            z-index: 1;
         }
         .back-button:hover {
             background: #00ffaa;
@@ -91,6 +96,40 @@
         function buyBeat(beatName) {
             window.location.href = `https://t.me/nfchik?text=Хочу купить ${beatName}`;
         }
+
+        window.onload = function() {
+            const canvas = document.getElementById("particles");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    speedX: Math.random() * 2 - 1,
+                    speedY: Math.random() * 2 - 1
+                });
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#00ffcc";
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                });
+                requestAnimationFrame(drawParticles);
+            }
+            drawParticles();
+        }
     </script>
 </head>
 <body>
@@ -100,7 +139,7 @@
         <div class="beat">
             <h3>Beat 1</h3>
             <p>$5</p>
-            <audio controls>
+            <audio controls controlsList="nodownload">
                 <source src="guitar.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
@@ -109,7 +148,7 @@
         <div class="beat">
             <h3>Beat 2</h3>
             <p>$5</p>
-            <audio controls>
+            <audio controls controlsList="nodownload">
                 <source src="beat2.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
@@ -118,7 +157,7 @@
         <div class="beat">
             <h3>Beat 3</h3>
             <p>$5</p>
-            <audio controls>
+            <audio controls controlsList="nodownload">
                 <source src="beat3.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
