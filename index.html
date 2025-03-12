@@ -160,11 +160,12 @@
         .beats-container {
             font-family: 'Orbitron', sans-serif;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; /* Увеличенный промежуток */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Уменьшена ширина карточек */
+            gap: 40px; /* Увеличен промежуток */
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 100px 20px 20px; /* Отступ сверху увеличен */
+            position: relative;
         }
         .beat {
             background: rgba(0, 0, 0, 0.7);
@@ -227,17 +228,18 @@
         .beat:nth-child(3) .play-indicator { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
         .beat:nth-child(3):hover { box-shadow: 0 0 20px #00dd77; }
 
-        /* Декоративные линии */
-        .neon-lines {
-            position: fixed;
+        /* Декоративные линии только в Beats */
+        .beats-container .neon-lines {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: 100%;
             pointer-events: none;
             z-index: 0;
         }
-        .neon-lines::before, .neon-lines::after {
+        .beats-container .neon-lines::before, 
+        .beats-container .neon-lines::after {
             content: '';
             position: absolute;
             width: 100%;
@@ -245,8 +247,8 @@
             background: linear-gradient(90deg, transparent, #00ffcc, transparent);
             animation: moveLine 10s infinite linear;
         }
-        .neon-lines::before { top: 20%; }
-        .neon-lines::after { bottom: 20%; }
+        .beats-container .neon-lines::before { top: 10%; }
+        .beats-container .neon-lines::after { bottom: 10%; }
         @keyframes moveLine {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
@@ -321,7 +323,10 @@
             100% { background-position: 0% 50%; }
         }
         @media (max-width: 768px) {
-            .beats-container { grid-template-columns: 1fr; }
+            .beats-container { 
+                grid-template-columns: 1fr; 
+                padding: 80px 20px 20px; 
+            }
             .beat h3 { font-size: 1.2rem; }
             .custom-player { height: 8px; }
             .play-indicator { width: 16px; height: 16px; top: -4px; }
@@ -341,7 +346,6 @@
     <div class="background-container" id="background"></div>
     <canvas id="snow"></canvas>
     <div class="blurred-bg"></div>
-    <div class="neon-lines"></div>
     <div class="intro" id="intro">
         <h1 onclick="enterSite()">NOFAL</h1>
         <div class="hint" id="hint">Click</div>
@@ -363,6 +367,7 @@
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <div class="content-container beats-container" id="beats">
+        <div class="neon-lines"></div>
         <div class="beat">
             <h3>Forest</h3>
             <audio preload="metadata">
@@ -463,7 +468,7 @@
             document.body.style.overflow = "auto";
             isSectionOpen = true;
             const background = document.getElementById("background");
-            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
+            background.style.transform = `translate(${lastMoveX}px, ${moveY}px)`;
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
         }
