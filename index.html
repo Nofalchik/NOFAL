@@ -440,7 +440,7 @@
     <div class="content-container beats-container" id="beats">
         <div class="beat">
             <h3>Forest</h3>
-            <audio>
+            <audio preload="metadata">
                 <source src="forest.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
@@ -594,7 +594,7 @@
             moveSnowflakes({ clientX: e.touches[0].clientX });
         });
 
-        // Логика для Beats с исправлением AbortError
+        // Логика для Beats с исправлением ошибок
         let audioInitialized = false;
 
         window.onload = function() {
@@ -620,9 +620,18 @@
                 let isDragging = false;
                 let isPlaying = false;
 
+                // Ждём загрузки метаданных
+                audio.addEventListener('loadedmetadata', () => {
+                    console.log("Audio metadata loaded, duration:", audio.duration);
+                });
+
+                audio.addEventListener('error', (e) => {
+                    console.error("Audio load error:", e);
+                });
+
                 // Обновление прогресса
                 audio.addEventListener('timeupdate', () => {
-                    if (!isDragging) {
+                    if (!isDragging && isFinite(audio.duration)) {
                         const progressPercent = (audio.currentTime / audio.duration) * 100;
                         progress.style.width = `${progressPercent}%`;
                         indicator.style.left = `${progressPercent}%`;
@@ -635,14 +644,19 @@
                     const rect = player.getBoundingClientRect();
                     const clickX = e.clientX - rect.left;
                     const width = rect.width;
-                    const percent = (clickX / width);
-                    audio.currentTime = percent * audio.duration;
-                    progress.style.width = `${percent * 100}%`;
-                    indicator.style.left = `${percent * 100}%`;
-                    if (!isPlaying) {
-                        audio.play().then(() => {
-                            isPlaying = true;
-                        }).catch(err => console.log("Play error:", err));
+                    const percent = clickX / width;
+                    if (isFinite(audio.duration)) {
+                        const newTime = percent * audio.duration;
+                        if (isFinite(newTime)) {
+                            audio.currentTime = newTime;
+                            progress.style.width = `${percent * 100}%`;
+                            indicator.style.left = `${percent * 100}%`;
+                            if (!isPlaying) {
+                                audio.play().then(() => {
+                                    isPlaying = true;
+                                }).catch(err => console.log("Play error:", err));
+                            }
+                        }
                     }
                 });
 
@@ -657,16 +671,21 @@
                         let newX = e.clientX - rect.left;
                         newX = Math.max(0, Math.min(newX, rect.width));
                         const percent = newX / rect.width;
-                        progress.style.width = `${percent * 100}%`;
-                        indicator.style.left = `${percent * 100}%`;
-                        audio.currentTime = percent * audio.duration;
+                        if (isFinite(audio.duration)) {
+                            const newTime = percent * audio.duration;
+                            if (isFinite(newTime)) {
+                                audio.currentTime = newTime;
+                                progress.style.width = `${percent * 100}%`;
+                                indicator.style.left = `${percent * 100}%`;
+                            }
+                        }
                     }
                 });
 
                 document.addEventListener('mouseup', () => {
                     if (isDragging) {
                         isDragging = false;
-                        if (!isPlaying) {
+                        if (!isPlaying && isFinite(audio.duration)) {
                             audio.play().then(() => {
                                 isPlaying = true;
                             }).catch(err => console.log("Play error:", err));
@@ -687,16 +706,21 @@
                         let newX = touch.clientX - rect.left;
                         newX = Math.max(0, Math.min(newX, rect.width));
                         const percent = newX / rect.width;
-                        progress.style.width = `${percent * 100}%`;
-                        indicator.style.left = `${percent * 100}%`;
-                        audio.currentTime = percent * audio.duration;
+                        if (isFinite(audio.duration)) {
+                            const newTime = percent * audio.duration;
+                            if (isFinite(newTime)) {
+                                audio.currentTime = newTime;
+                                progress.style.width = `${percent * 100}%`;
+                                indicator.style.left = `${percent * 100}%`;
+                            }
+                        }
                     }
                 });
 
                 document.addEventListener('touchend', (e) => {
                     if (isDragging) {
                         isDragging = false;
-                        if (!isPlaying) {
+                        if (!isPlaying && isFinite(audio.duration)) {
                             audio.play().then(() => {
                                 isPlaying = true;
                             }).catch(err => console.log("Play error:", err));
@@ -707,20 +731,24 @@
                 // Автозапуск при наведении
                 beat.addEventListener('mouseenter', () => {
                     if (audioInitialized && document.getElementById("beats").classList.contains("active") && !isPlaying) {
-                        audio.currentTime = 0;
-                        audio.play().then(() => {
-                            isPlaying = true;
-                        }).catch(err => console.log("Play error:", err));
+                        if (isFinite(audio.duration)) {
+                            audio.currentTime = 0;
+                            audio.play().then(() => {
+                                isPlaying = true;
+                            }).catch(err => console.log("Play error:", err));
+                        }
                     }
                 });
 
-                // Остановка при уходе мышки с проверкой
+                // Остановка при уходе мышки
                 beat.addEventListener('mouseleave', () => {
                     if (audioInitialized && isPlaying) {
                         audio.pause();
-                        audio.currentTime = 0;
-                        progress.style.width = '0%';
-                        indicator.style.left = '0%';
+                        if (isFinite(audio.duration)) {
+                            audio.currentTime = 0;
+                            progress.style.width = '0%';
+                            indicator.style.left = '0%';
+                        }
                         isPlaying = false;
                     }
                 });
