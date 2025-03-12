@@ -99,35 +99,28 @@
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
-
-        }
-    
-     .menu a {
-    font-size: 4.5rem;
-    font-weight: 700;
-    text-decoration: none;
+  
+  .menu a {
+    font-size: 5rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
     padding: 20px 50px;
     border-radius: 15px;
     background: rgba(0, 0, 0, 0.8);
-    color: #00ffcc;
+    color: #00ffcc !important;
     transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, color 0.3s ease-in-out;
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     letter-spacing: 3px;
-    animation: neonFlicker 1s infinite alternate;
+    animation: neonFlicker 1.5s infinite alternate;
     text-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffaa, 0 0 40px #00ffaa, 0 0 70px #00ffdd;
-}
-
-@keyframes neonFlicker {
-    0% { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffaa, 0 0 30px #00ffaa, 0 0 50px #00ffdd; }
-    50% { text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffaa, 0 0 50px #00ffaa, 0 0 80px #00ffdd; }
-    100% { text-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffaa, 0 0 40px #00ffaa, 0 0 70px #00ffdd; }
 }
 
 .menu a:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.2);
+    transform: scale(1.3);
 }
+
 
 
         @media (max-width: 768px) {
