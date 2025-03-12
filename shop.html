@@ -16,7 +16,7 @@
             padding: 0;
             overflow-x: hidden;
             animation: breathe 10s infinite ease-in-out;
-            min-height: 100vh; /* Полная высота экрана */
+            min-height: 100vh;
         }
         .shop-container {
             display: flex;
@@ -152,7 +152,7 @@
             transform: translateX(-50%);
             background: linear-gradient(45deg, #00ffcc, #00ffaa, #00ffcc);
             background-size: 200% 200%;
-            color: #000; /* Чёрный текст для контраста с градиентом */
+            color: #000;
             padding: 8px 15px;
             border-radius: 10px;
             font-size: 1rem;
@@ -161,7 +161,7 @@
             z-index: 10;
             opacity: 0;
             transition: opacity 0.3s ease;
-            animation: neonGradient 3s infinite ease-in-out; /* Неоновая анимация */
+            animation: neonGradient 3s infinite ease-in-out;
         }
         .touch-hint.visible {
             display: block;
@@ -175,7 +175,9 @@
         /* Адаптация фона и подсказки для телефонов */
         @media (max-width: 768px) {
             body {
-                background-size: 100% 100%; /* Растягиваем фон на весь экран */
+                background-size: cover;
+                background-attachment: scroll; /* Убираем fixed для мобильных */
+                animation: none; /* Убираем "дыхание" на телефонах */
             }
             .beat { width: 90%; max-width: 300px; margin: 0 auto; }
             .beat h3 { font-size: 1.2rem; }
@@ -213,6 +215,14 @@
             const ctx = canvas.getContext("2d");
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+
+            // Динамическая корректировка фона
+            function adjustBackground() {
+                document.body.style.height = window.innerHeight + 'px';
+                canvas.height = window.innerHeight;
+            }
+            adjustBackground();
+            window.addEventListener('resize', adjustBackground);
 
             const particles = [];
             const particleCount = 30;
@@ -358,20 +368,6 @@
                 <div class="bar"></div>
             </div>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
-        </div>
-        <div class="beat">
-            <h3>Beat 2</h3>
-            <p>$10</p>
-            <audio>
-                <source src="beat2.mp3" type="audio/mpeg">
-            </audio>
-            <div class="equalizer">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-            <button onclick="buyBeat('Beat 2')">Buy Now</button>
         </div>
     </div>
     <a href="index.html" class="back-button">Back to Main Menu</a>
