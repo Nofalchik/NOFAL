@@ -64,16 +64,16 @@
             transform: scale(1.1);
             transition: transform 0.3s ease-in-out;
         }
-        .hint::before {
-            content: "Click";
+        .hint {
             position: absolute;
             bottom: 15%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 1.2rem;
             color: #ffffff;
-            opacity: 0.7;
+            opacity: 0.9;
             animation: blink 1.5s infinite;
+            z-index: 11; /* Выше всех слоёв */
         }
         @keyframes blink {
             0%, 100% { opacity: 0.7; }
@@ -130,13 +130,6 @@
             z-index: -1;
         }
         @media (max-width: 768px) {
-            .background-container {
-                width: 100%;
-                height: 100vh;
-            }
-            .hint::before {
-                content: "Tap";
-            }
             .menu {
                 flex-direction: column;
                 align-items: center;
@@ -155,7 +148,7 @@
                 font-size: 1.2rem;
                 padding: 10px 20px;
             }
-            .hint::before {
+            .hint {
                 font-size: 1rem;
                 bottom: 10%;
             }
@@ -168,7 +161,7 @@
     <div class="blurred-bg"></div>
     <div class="intro" id="intro">
         <h1 onclick="enterSite()">NOFAL</h1>
-        <div class="hint"></div>
+        <div class="hint" id="hint">Click</div>
     </div>
     <div class="menu" id="menu">
         <a href="bio.html">About Me</a>
@@ -177,29 +170,26 @@
     </div>
 
     <script>
-        // Динамическая подстройка фона и канваса
-        function adjustBackground() {
-            const bg = document.getElementById("background");
-            bg.style.height = window.innerHeight + "px";
-            const snowCanvas = document.getElementById("snow");
-            snowCanvas.height = window.innerHeight;
-            snowCanvas.width = window.innerWidth;
-        }
-        adjustBackground();
-        window.addEventListener("resize", adjustBackground);
-
-        // Движение фона (как в оригинале)
-        function moveBackground(e) {
+        // Движение фона (оригинальное)
+        document.addEventListener("mousemove", (e) => {
             const background = document.getElementById("background");
             let moveX = (e.clientX / window.innerWidth - 0.5) * 20;
             let moveY = (e.clientY / window.innerHeight - 0.5) * 20;
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        }
-        document.addEventListener("mousemove", moveBackground);
+        });
         document.addEventListener("touchmove", (e) => {
             const touch = e.touches[0];
-            moveBackground({ clientX: touch.clientX, clientY: touch.clientY });
+            const background = document.getElementById("background");
+            let moveX = (touch.clientX / window.innerWidth - 0.5) * 20;
+            let moveY = (touch.clientY / window.innerHeight - 0.5) * 20;
+            background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
+
+        // Переключение Click/Tap
+        const hint = document.getElementById("hint");
+        if (window.innerWidth <= 768) {
+            hint.textContent = "Tap";
+        }
 
         // Переход к меню
         function enterSite() {
@@ -215,6 +205,8 @@
         // Анимация снежинок
         const snowCanvas = document.getElementById("snow");
         const ctx = snowCanvas.getContext("2d");
+        snowCanvas.width = window.innerWidth;
+        snowCanvas.height = window.innerHeight;
         let snowflakes = [];
 
         function createSnowflakes() {
