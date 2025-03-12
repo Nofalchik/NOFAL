@@ -170,8 +170,8 @@
             transform: translateY(0);
             pointer-events: auto;
         }
-        /* Стили магазина */
-        .shop-container {
+        /* Стили для Beats */
+        .beats-container {
             font-family: 'Orbitron', sans-serif;
         }
         .beat {
@@ -195,27 +195,8 @@
             color: #00ffcc;
             text-shadow: 0 0 10px #00ffcc;
         }
-        .beat p {
-            font-size: 1.1rem;
-            margin: 5px 0;
-        }
         .beat audio {
             display: none;
-        }
-        .beat button {
-            background: #00ffcc;
-            color: #000;
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            border-radius: 5px;
-            transition: background 0.3s ease-in-out;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .beat button:hover {
-            background: #00ffaa;
         }
         .custom-player {
             width: 100%;
@@ -349,13 +330,6 @@
             .beat h3 {
                 font-size: 1.2rem;
             }
-            .beat p {
-                font-size: 1rem;
-            }
-            .beat button {
-                padding: 7px 10px;
-                font-size: 0.85rem;
-            }
             .custom-player {
                 height: 8px;
             }
@@ -406,13 +380,6 @@
             .beat h3 {
                 font-size: 1rem;
             }
-            .beat p {
-                font-size: 0.9rem;
-            }
-            .beat button {
-                padding: 6px 8px;
-                font-size: 0.8rem;
-            }
             .custom-player {
                 height: 6px;
             }
@@ -454,7 +421,7 @@
     <div class="menu" id="menu">
         <a href="#" onclick="showSection(event, this, 'about')">About Me</a>
         <a href="#" onclick="showSection(event, this, 'socials')">Socials</a>
-        <a href="#" onclick="showSection(event, this, 'shop')">Shop</a>
+        <a href="#" onclick="showSection(event, this, 'beats')">Beats</a>
     </div>
     <!-- Контейнер для About Me -->
     <div class="content-container about-container" id="about">
@@ -469,11 +436,10 @@
         <a href="https://www.twitch.tv/nofal_of" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
-    <!-- Контейнер для Shop -->
-    <div class="content-container shop-container" id="shop">
+    <!-- Контейнер для Beats -->
+    <div class="content-container beats-container" id="beats">
         <div class="beat">
             <h3>Forest</h3>
-            <p></p>
             <audio>
                 <source src="forest.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -482,7 +448,6 @@
                 <div class="progress-bar" id="progress1"></div>
                 <div class="play-indicator" id="indicator1"></div>
             </div>
-            <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
     </div>
     <div id="touch-hint" class="touch-hint">Drag to listen</div>
@@ -561,7 +526,7 @@
             currentActiveLink = link;
             hideAllSections();
             const section = document.getElementById(sectionId);
-            section.style.display = sectionId === "shop" ? "flex" : "block"; // Flex для Shop, block для других
+            section.style.display = sectionId === "beats" ? "flex" : "block"; // Flex для Beats, block для других
             setTimeout(() => {
                 section.classList.add("active");
             }, 10);
@@ -571,11 +536,6 @@
             background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
-        }
-
-        // Покупка бита
-        function buyBeat(beatName) {
-            window.location.href = `https://t.me/nfchik?text=I want to buy ${beatName}`;
         }
 
         // Анимация снежинок
@@ -634,7 +594,7 @@
             moveSnowflakes({ clientX: e.touches[0].clientX });
         });
 
-        // Логика магазина с кастомным плеером
+        // Логика для Beats с исправлением AbortError
         let audioInitialized = false;
 
         window.onload = function() {
@@ -658,6 +618,7 @@
                 const progress = beat.querySelector('.progress-bar');
                 const indicator = beat.querySelector('.play-indicator');
                 let isDragging = false;
+                let isPlaying = false;
 
                 // Обновление прогресса
                 audio.addEventListener('timeupdate', () => {
@@ -670,7 +631,7 @@
 
                 // Перемотка при клике
                 player.addEventListener('click', (e) => {
-                    if (!audioInitialized || !document.getElementById("shop").classList.contains("active")) return;
+                    if (!audioInitialized || !document.getElementById("beats").classList.contains("active")) return;
                     const rect = player.getBoundingClientRect();
                     const clickX = e.clientX - rect.left;
                     const width = rect.width;
@@ -678,7 +639,11 @@
                     audio.currentTime = percent * audio.duration;
                     progress.style.width = `${percent * 100}%`;
                     indicator.style.left = `${percent * 100}%`;
-                    audio.play();
+                    if (!isPlaying) {
+                        audio.play().then(() => {
+                            isPlaying = true;
+                        }).catch(err => console.log("Play error:", err));
+                    }
                 });
 
                 // Перетаскивание индикатора
@@ -687,7 +652,7 @@
                 });
 
                 document.addEventListener('mousemove', (e) => {
-                    if (isDragging && audioInitialized && document.getElementById("shop").classList.contains("active")) {
+                    if (isDragging && audioInitialized && document.getElementById("beats").classList.contains("active")) {
                         const rect = player.getBoundingClientRect();
                         let newX = e.clientX - rect.left;
                         newX = Math.max(0, Math.min(newX, rect.width));
@@ -701,7 +666,11 @@
                 document.addEventListener('mouseup', () => {
                     if (isDragging) {
                         isDragging = false;
-                        audio.play();
+                        if (!isPlaying) {
+                            audio.play().then(() => {
+                                isPlaying = true;
+                            }).catch(err => console.log("Play error:", err));
+                        }
                     }
                 });
 
@@ -712,7 +681,7 @@
                 });
 
                 document.addEventListener('touchmove', (e) => {
-                    if (isDragging && audioInitialized && document.getElementById("shop").classList.contains("active")) {
+                    if (isDragging && audioInitialized && document.getElementById("beats").classList.contains("active")) {
                         const touch = e.touches[0];
                         const rect = player.getBoundingClientRect();
                         let newX = touch.clientX - rect.left;
@@ -727,31 +696,39 @@
                 document.addEventListener('touchend', (e) => {
                     if (isDragging) {
                         isDragging = false;
-                        audio.play();
+                        if (!isPlaying) {
+                            audio.play().then(() => {
+                                isPlaying = true;
+                            }).catch(err => console.log("Play error:", err));
+                        }
                     }
                 });
 
                 // Автозапуск при наведении
                 beat.addEventListener('mouseenter', () => {
-                    if (audioInitialized && document.getElementById("shop").classList.contains("active")) {
+                    if (audioInitialized && document.getElementById("beats").classList.contains("active") && !isPlaying) {
                         audio.currentTime = 0;
-                        audio.play();
+                        audio.play().then(() => {
+                            isPlaying = true;
+                        }).catch(err => console.log("Play error:", err));
                     }
                 });
 
+                // Остановка при уходе мышки с проверкой
                 beat.addEventListener('mouseleave', () => {
-                    if (audioInitialized) {
+                    if (audioInitialized && isPlaying) {
                         audio.pause();
                         audio.currentTime = 0;
                         progress.style.width = '0%';
                         indicator.style.left = '0%';
+                        isPlaying = false;
                     }
                 });
             });
 
-            // Показ подсказки только в разделе Shop на мобильных
-            document.getElementById("shop").addEventListener("transitionend", () => {
-                if (document.getElementById("shop").classList.contains("active") && window.innerWidth <= 768) {
+            // Показ подсказки только в разделе Beats на мобильных
+            document.getElementById("beats").addEventListener("transitionend", () => {
+                if (document.getElementById("beats").classList.contains("active") && window.innerWidth <= 768) {
                     touchHint.classList.add("visible");
                 } else {
                     touchHint.classList.remove("visible");
