@@ -200,24 +200,7 @@
             margin: 5px 0;
         }
         .beat audio {
-            width: 100%;
-            margin: 10px 0;
-            display: block;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            outline: none;
-        }
-        .beat audio::-webkit-media-controls-panel {
-            background: rgba(0, 0, 0, 0.5);
-            color: #00ffcc;
-        }
-        .beat audio::-webkit-media-controls-play-button,
-        .beat audio::-webkit-media-controls-volume-slider,
-        .beat audio::-webkit-media-controls-seek-back-button,
-        .beat audio::-webkit-media-controls-seek-forward-button,
-        .beat audio::-webkit-media-controls-fullscreen-button,
-        .beat audio::-webkit-media-controls-mute-button {
-            filter: brightness(1.5);
+            display: none;
         }
         .beat button {
             background: #00ffcc;
@@ -233,6 +216,45 @@
         }
         .beat button:hover {
             background: #00ffaa;
+        }
+        .custom-player {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            position: relative;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: #00ffcc;
+            border-radius: 5px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+        .progress-bar:hover {
+            background: #00ffaa;
+            box-shadow: 0 0 15px #00ffaa;
+        }
+        .play-indicator {
+            position: absolute;
+            top: -5px;
+            width: 20px;
+            height: 20px;
+            background: #00ffcc;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px #00ffcc;
+            transition: left 0.1s linear;
+        }
+        .play-indicator:hover {
+            background: #00ffaa;
+            box-shadow: 0 0 15px #00ffaa;
         }
         /* Стили для About Me */
         .about-container {
@@ -334,8 +356,13 @@
                 padding: 7px 10px;
                 font-size: 0.85rem;
             }
-            .beat audio {
-                width: 100%;
+            .custom-player {
+                height: 8px;
+            }
+            .play-indicator {
+                width: 16px;
+                height: 16px;
+                top: -4px;
             }
             .about-container h1 {
                 font-size: 2.5rem;
@@ -386,8 +413,13 @@
                 padding: 6px 8px;
                 font-size: 0.8rem;
             }
-            .beat audio {
-                width: 100%;
+            .custom-player {
+                height: 6px;
+            }
+            .play-indicator {
+                width: 14px;
+                height: 14px;
+                top: -4px;
             }
             .about-container h1 {
                 font-size: 2rem;
@@ -442,14 +474,18 @@
         <div class="beat">
             <h3>Beat 1</h3>
             <p>$5</p>
-            <audio controls>
+            <audio>
                 <source src="guitar.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
+            <div class="custom-player" id="player1">
+                <div class="progress-bar" id="progress1"></div>
+                <div class="play-indicator" id="indicator1"></div>
+            </div>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
     </div>
-    <div id="touch-hint" class="touch-hint">Use the player to listen</div>
+    <div id="touch-hint" class="touch-hint">Drag to listen</div>
 
     <script>
         // Движение фона только до открытия секций
@@ -598,7 +634,7 @@
             moveSnowflakes({ clientX: e.touches[0].clientX });
         });
 
-        // Логика магазина
+        // Логика магазина с кастомным плеером
         let audioInitialized = false;
 
         window.onload = function() {
@@ -614,6 +650,104 @@
             }
 
             const touchHint = document.getElementById('touch-hint');
+            const beats = document.querySelectorAll('.beat');
+
+            beats.forEach(beat => {
+                const audio = beat.querySelector('audio');
+                const player = beat.querySelector('.custom-player');
+                const progress = beat.querySelector('.progress-bar');
+                const indicator = beat.querySelector('.play-indicator');
+                let isDragging = false;
+
+                // Обновление прогресса
+                audio.addEventListener('timeupdate', () => {
+                    if (!isDragging) {
+                        const progressPercent = (audio.currentTime / audio.duration) * 100;
+                        progress.style.width = `${progressPercent}%`;
+                        indicator.style.left = `${progressPercent}%`;
+                    }
+                });
+
+                // Перемотка при клике
+                player.addEventListener('click', (e) => {
+                    if (!audioInitialized || !document.getElementById("shop").classList.contains("active")) return;
+                    const rect = player.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const width = rect.width;
+                    const percent = (clickX / width);
+                    audio.currentTime = percent * audio.duration;
+                    progress.style.width = `${percent * 100}%`;
+                    indicator.style.left = `${percent * 100}%`;
+                    audio.play();
+                });
+
+                // Перетаскивание индикатора
+                indicator.addEventListener('mousedown', () => {
+                    isDragging = true;
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (isDragging && audioInitialized && document.getElementById("shop").classList.contains("active")) {
+                        const rect = player.getBoundingClientRect();
+                        let newX = e.clientX - rect.left;
+                        newX = Math.max(0, Math.min(newX, rect.width));
+                        const percent = newX / rect.width;
+                        progress.style.width = `${percent * 100}%`;
+                        indicator.style.left = `${percent * 100}%`;
+                        audio.currentTime = percent * audio.duration;
+                    }
+                });
+
+                document.addEventListener('mouseup', () => {
+                    if (isDragging) {
+                        isDragging = false;
+                        audio.play();
+                    }
+                });
+
+                // Поддержка тач-событий
+                indicator.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    isDragging = true;
+                });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (isDragging && audioInitialized && document.getElementById("shop").classList.contains("active")) {
+                        const touch = e.touches[0];
+                        const rect = player.getBoundingClientRect();
+                        let newX = touch.clientX - rect.left;
+                        newX = Math.max(0, Math.min(newX, rect.width));
+                        const percent = newX / rect.width;
+                        progress.style.width = `${percent * 100}%`;
+                        indicator.style.left = `${percent * 100}%`;
+                        audio.currentTime = percent * audio.duration;
+                    }
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    if (isDragging) {
+                        isDragging = false;
+                        audio.play();
+                    }
+                });
+
+                // Автозапуск при наведении
+                beat.addEventListener('mouseenter', () => {
+                    if (audioInitialized && document.getElementById("shop").classList.contains("active")) {
+                        audio.currentTime = 0;
+                        audio.play();
+                    }
+                });
+
+                beat.addEventListener('mouseleave', () => {
+                    if (audioInitialized) {
+                        audio.pause();
+                        audio.currentTime = 0;
+                        progress.style.width = '0%';
+                        indicator.style.left = '0%';
+                    }
+                });
+            });
 
             // Показ подсказки только в разделе Shop на мобильных
             document.getElementById("shop").addEventListener("transitionend", () => {
