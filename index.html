@@ -18,7 +18,7 @@
             position: fixed;
             width: 110%;
             height: 110vh;
-            background: url('background.jpg') no-repeat center center;
+            background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
             z-index: -2;
@@ -68,6 +68,8 @@
             content: "Click";
             position: absolute;
             bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 1.2rem;
             color: #ffffff;
             opacity: 0.7;
@@ -129,7 +131,6 @@
         }
         @media (max-width: 768px) {
             .background-container {
-                background-attachment: scroll;
                 width: 100%;
                 height: 100vh;
             }
@@ -176,7 +177,7 @@
     </div>
 
     <script>
-        // Динамическая подстройка фона
+        // Динамическая подстройка фона и канваса
         function adjustBackground() {
             const bg = document.getElementById("background");
             bg.style.height = window.innerHeight + "px";
@@ -187,7 +188,7 @@
         adjustBackground();
         window.addEventListener("resize", adjustBackground);
 
-        // Движение фона
+        // Движение фона (как в оригинале)
         function moveBackground(e) {
             const background = document.getElementById("background");
             let moveX = (e.clientX / window.innerWidth - 0.5) * 20;
