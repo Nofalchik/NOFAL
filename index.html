@@ -17,8 +17,8 @@
         }
         .background-container {
             position: fixed;
-            width: 120%; /* Увеличил запас */
-            height: 120vh; /* Увеличил запас */
+            width: 150%; /* Ещё больше запас */
+            height: 150vh; /* Ещё больше запас */
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
@@ -72,7 +72,7 @@
             transform: translateX(-50%);
             font-size: 1.2rem;
             color: #ffffff;
-            text-shadow: 0 0 5px #000000; /* Добавил тень для контраста */
+            text-shadow: 0 0 5px #000000; /* Тень для контраста */
             animation: blink 1.5s infinite;
             z-index: 11;
         }
@@ -171,18 +171,18 @@
     </div>
 
     <script>
-        // Движение фона (оригинальное)
+        // Движение фона (замедленное)
         document.addEventListener("mousemove", (e) => {
             const background = document.getElementById("background");
-            let moveX = (e.clientX / window.innerWidth - 0.5) * 20;
-            let moveY = (e.clientY / window.innerHeight - 0.5) * 20;
+            let moveX = (e.clientX / window.innerWidth - 0.5) * 10; // Уменьшил с 20 до 10
+            let moveY = (e.clientY / window.innerHeight - 0.5) * 10; // Уменьшил с 20 до 10
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
         document.addEventListener("touchmove", (e) => {
             const touch = e.touches[0];
             const background = document.getElementById("background");
-            let moveX = (touch.clientX / window.innerWidth - 0.5) * 20;
-            let moveY = (touch.clientY / window.innerHeight - 0.5) * 20;
+            let moveX = (touch.clientX / window.innerWidth - 0.5) * 10; // Уменьшил с 20 до 10
+            let moveY = (touch.clientY / window.innerHeight - 0.5) * 10; // Уменьшил с 20 до 10
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
