@@ -129,6 +129,12 @@
                 requestAnimationFrame(drawParticles);
             }
             drawParticles();
+
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.addEventListener('play', function() {
+                    audio.muted = false;
+                });
+            });
         }
     </script>
 </head>
@@ -141,7 +147,6 @@
             <p>$5</p>
             <audio controls controlsList="nodownload">
                 <source src="guitar.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
             </audio>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
@@ -150,7 +155,6 @@
             <p>$5</p>
             <audio controls controlsList="nodownload">
                 <source src="beat2.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
             </audio>
             <button onclick="buyBeat('Beat 2')">Buy Now</button>
         </div>
@@ -159,7 +163,6 @@
             <p>$5</p>
             <audio controls controlsList="nodownload">
                 <source src="beat3.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
             </audio>
             <button onclick="buyBeat('Beat 3')">Buy Now</button>
         </div>
