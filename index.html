@@ -150,33 +150,48 @@
             }, 1000);
         }
 
-        const canvas = document.getElementById("snow");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const snowCanvas = document.getElementById("snow");
+        const ctx = snowCanvas.getContext("2d");
+        snowCanvas.width = window.innerWidth;
+        snowCanvas.height = window.innerHeight;
+        let snowflakes = [];
 
-        let particles = Array.from({ length: 100 }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 3 + 1,
-            speedX: Math.random() * 0.5 - 0.25,
-            speedY: Math.random() * 1 + 0.5
-        }));
+        function createSnowflakes() {
+            for (let i = 0; i < 100; i++) {
+                snowflakes.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    radius: Math.random() * 3 + 1,
+                    speedX: 0,
+                    speedY: Math.random() * 2 + 1
+                });
+            }
+        }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.speedX;
-                p.y += p.speedY;
-                if (p.y > canvas.height) p.y = 0;
+        function moveSnowflakes(e) {
+            let moveX = (e.clientX / window.innerWidth - 0.5) * 2;
+            snowflakes.forEach(flake => {
+                flake.speedX = moveX;
+            });
+        }
+
+        function updateSnow() {
+            ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+            snowflakes.forEach(flake => {
+                flake.x += flake.speedX;
+                flake.y += flake.speedY;
+                if (flake.y > window.innerHeight) flake.y = 0;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
                 ctx.fillStyle = "white";
                 ctx.fill();
             });
-            requestAnimationFrame(animateParticles);
+            requestAnimationFrame(updateSnow);
         }
-        animateParticles();
+
+        createSnowflakes();
+        updateSnow();
+        document.addEventListener("mousemove", moveSnowflakes);
     </script>
 </body>
 </html>
