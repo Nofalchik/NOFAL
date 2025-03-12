@@ -13,11 +13,12 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            background-color: #1a1a1a; /* Запасной цвет для скрытия краёв */
         }
         .background-container {
             position: fixed;
-            width: 110%;
-            height: 110vh;
+            width: 120%; /* Увеличил запас */
+            height: 120vh; /* Увеличил запас */
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
@@ -71,9 +72,9 @@
             transform: translateX(-50%);
             font-size: 1.2rem;
             color: #ffffff;
-            opacity: 0.9;
+            text-shadow: 0 0 5px #000000; /* Добавил тень для контраста */
             animation: blink 1.5s infinite;
-            z-index: 11; /* Выше всех слоёв */
+            z-index: 11;
         }
         @keyframes blink {
             0%, 100% { opacity: 0.7; }
@@ -187,9 +188,17 @@
 
         // Переключение Click/Tap
         const hint = document.getElementById("hint");
-        if (window.innerWidth <= 768) {
-            hint.textContent = "Tap";
+        function updateHint() {
+            if (window.innerWidth <= 768) {
+                hint.textContent = "Tap";
+                console.log("Switched to Tap"); // Для отладки
+            } else {
+                hint.textContent = "Click";
+                console.log("Switched to Click"); // Для отладки
+            }
         }
+        updateHint();
+        window.addEventListener("resize", updateHint);
 
         // Переход к меню
         function enterSite() {
@@ -233,7 +242,7 @@
         function updateSnow(timestamp) {
             if (!lastTime) lastTime = timestamp;
             const delta = timestamp - lastTime;
-            if (delta > 16) { // Ограничение ~60 FPS
+            if (delta > 16) {
                 lastTime = timestamp;
                 ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
                 snowflakes.forEach(flake => {
