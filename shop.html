@@ -62,36 +62,41 @@
             background: #00ffaa;
         }
     </style>
+    <script>
+        function buyBeat(beatName) {
+            window.location.href = `https://t.me/nfchik?text=Хочу купить ${beatName}`;
+        }
+    </script>
 </head>
 <body>
     <h1>Beat Store</h1>
     <div class="shop-container">
         <div class="beat">
             <h3>Beat 1</h3>
-            <p>$19.99</p>
+            <p>$5</p>
             <audio controls>
                 <source src="beat1.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <button>Buy Now</button>
+            <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
         <div class="beat">
             <h3>Beat 2</h3>
-            <p>$29.99</p>
+            <p>$5</p>
             <audio controls>
                 <source src="beat2.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <button>Buy Now</button>
+            <button onclick="buyBeat('Beat 2')">Buy Now</button>
         </div>
         <div class="beat">
             <h3>Beat 3</h3>
-            <p>$39.99</p>
+            <p>$5</p>
             <audio controls>
                 <source src="beat3.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <button>Buy Now</button>
+            <button onclick="buyBeat('Beat 3')">Buy Now</button>
         </div>
     </div>
 </body>
