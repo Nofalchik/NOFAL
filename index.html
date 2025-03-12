@@ -47,18 +47,32 @@
 .intro h1 {
     font-size: 5rem;
     font-weight: bold;
-    color: #00cc99;
-    text-shadow: 0 0 3px #00cc99, 0 0 8px #00cc99, 0 0 15px #00cc99, 0 0 30px #009977, 0 0 60px #009977;
+    color: #ff0000;
     cursor: pointer;
     opacity: 0;
     animation: fadeIn 2s forwards, neonGlow 3s infinite alternate;
 }
+
 @keyframes neonGlow {
-    from {
-        text-shadow: 0 0 3px #00cc99, 0 0 8px #00cc99, 0 0 15px #00cc99, 0 0 30px #009977, 0 0 60px #009977;
+    0% {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #cc0000, 0 0 80px #cc0000;
+        opacity: 1;
     }
-    to {
-        text-shadow: 0 0 5px #00cc99, 0 0 12px #00cc99, 0 0 20px #00cc99, 0 0 40px #007755, 0 0 80px #007755;
+    25% {
+        text-shadow: 0 0 5px #aa0000, 0 0 10px #aa0000, 0 0 20px #aa0000, 0 0 40px #880000, 0 0 80px #880000;
+        opacity: 0.8;
+    }
+    50% {
+        text-shadow: 0 0 3px #660000, 0 0 6px #660000, 0 0 12px #660000, 0 0 24px #440000, 0 0 48px #440000;
+        opacity: 0.5;
+    }
+    75% {
+        text-shadow: 0 0 8px #aa0000, 0 0 16px #aa0000, 0 0 32px #aa0000, 0 0 64px #880000, 0 0 128px #880000;
+        opacity: 0.9;
+    }
+    100% {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #cc0000, 0 0 80px #cc0000;
+        opacity: 1;
     }
 }
 
