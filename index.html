@@ -29,7 +29,7 @@
             position: fixed;
             width: 100%;
             height: 100vh;
-            backdrop-filter: blur(0.3px);
+            backdrop-filter: blur(0.2px);
             transition: backdrop-filter 1s ease-in-out;
             z-index: -1;
         }
@@ -136,13 +136,6 @@
             const background = document.getElementById("background");
             let moveX = (e.clientX / window.innerWidth - 0.5) * 20;
             let moveY = (e.clientY / window.innerHeight - 0.5) * 20;
-            background.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        });
-
-        window.addEventListener("deviceorientation", (event) => {
-            const background = document.getElementById("background");
-            let moveX = event.gamma * 1.2;
-            let moveY = event.beta * 1.2;
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
