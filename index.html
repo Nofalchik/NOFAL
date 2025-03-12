@@ -101,19 +101,27 @@
 }
 
         }
-        .menu a {
-            font-size: 1.5rem;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #ffffff;
-            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-        }
-        .menu a:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: scale(1.1);
-        }
+       .menu a {
+    font-size: 2.5rem; /* Сделал текст крупнее */
+    text-decoration: none;
+    padding: 20px 40px; /* Увеличил размер кнопок */
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.8); /* Сделал фон темнее */
+    color: #00ffcc;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px; /* Увеличил расстояние между буквами */
+    border: 2px solid #00ffcc; /* Добавил неоновую рамку */
+}
+
+.menu a:hover {
+    background: #00ffcc;
+    color: #000000;
+    transform: scale(1.3); /* Сделал эффект увеличения сильнее */
+    text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc, 0 0 60px #00ffcc; /* Добавил яркий неоновый эффект */
+}
+
         @media (max-width: 768px) {
             .menu {
                 flex-direction: column;
