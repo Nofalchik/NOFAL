@@ -160,75 +160,74 @@
         .beats-container {
             font-family: 'Orbitron', sans-serif;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Уменьшена ширина карточек */
-            gap: 40px; /* Увеличен промежуток */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 50px; /* Больше пространства */
             max-width: 1200px;
             margin: 0 auto;
-            padding: 100px 20px 20px; /* Отступ сверху увеличен */
+            padding: 120px 20px 20px; /* Опускаем ниже */
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.1), rgba(0, 204, 255, 0.1));
             position: relative;
         }
         .beat {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
             box-sizing: border-box;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
         .beat:hover {
-            transform: translateY(-5px);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
         }
         .beat h3 {
-            margin: 10px 0;
-            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            font-weight: 400;
         }
         .beat audio {
             display: none;
         }
         .custom-player {
             width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
             position: relative;
-            margin: 10px 0;
             cursor: pointer;
         }
         .progress-bar {
             height: 100%;
             width: 0;
-            border-radius: 5px;
+            border-radius: 3px;
             position: absolute;
             top: 0;
             left: 0;
+            background: linear-gradient(90deg, #00ffcc, #00ccff);
             transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
         }
         .play-indicator {
             position: absolute;
-            top: -5px;
-            width: 20px;
-            height: 20px;
+            top: -4px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             transform: translateX(-50%);
             transition: left 0.1s linear;
         }
-        /* Уникальные цвета в одной гамме */
-        .beat:nth-child(1) h3 { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
-        .beat:nth-child(1) .progress-bar { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
+        /* Уникальные цвета */
+        .beat:nth-child(1) h3 { color: #00ffcc; text-shadow: 0 0 5px #00ffcc; }
         .beat:nth-child(1) .play-indicator { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
-        .beat:nth-child(1):hover { box-shadow: 0 0 20px #00ffaa; }
 
-        .beat:nth-child(2) h3 { color: #00ccff; text-shadow: 0 0 10px #00ccff; }
-        .beat:nth-child(2) .progress-bar { background: #00ccff; box-shadow: 0 0 10px #00ccff; }
+        .beat:nth-child(2) h3 { color: #00ccff; text-shadow: 0 0 5px #00ccff; }
         .beat:nth-child(2) .play-indicator { background: #00ccff; box-shadow: 0 0 10px #00ccff; }
-        .beat:nth-child(2):hover { box-shadow: 0 0 20px #00aaff; }
 
-        .beat:nth-child(3) h3 { color: #00ff99; text-shadow: 0 0 10px #00ff99; }
-        .beat:nth-child(3) .progress-bar { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
+        .beat:nth-child(3) h3 { color: #00ff99; text-shadow: 0 0 5px #00ff99; }
         .beat:nth-child(3) .play-indicator { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
-        .beat:nth-child(3):hover { box-shadow: 0 0 20px #00dd77; }
 
-        /* Декоративные линии только в Beats */
+        /* Декоративные линии */
         .beats-container .neon-lines {
             position: absolute;
             top: 0;
@@ -237,6 +236,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+            opacity: 0.3;
         }
         .beats-container .neon-lines::before, 
         .beats-container .neon-lines::after {
@@ -247,8 +247,8 @@
             background: linear-gradient(90deg, transparent, #00ffcc, transparent);
             animation: moveLine 10s infinite linear;
         }
-        .beats-container .neon-lines::before { top: 10%; }
-        .beats-container .neon-lines::after { bottom: 10%; }
+        .beats-container .neon-lines::before { top: 15%; }
+        .beats-container .neon-lines::after { bottom: 15%; }
         @keyframes moveLine {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
@@ -325,11 +325,11 @@
         @media (max-width: 768px) {
             .beats-container { 
                 grid-template-columns: 1fr; 
-                padding: 80px 20px 20px; 
+                padding: 100px 20px 20px; 
             }
-            .beat h3 { font-size: 1.2rem; }
-            .custom-player { height: 8px; }
-            .play-indicator { width: 16px; height: 16px; top: -4px; }
+            .beat h3 { font-size: 1.1rem; }
+            .custom-player { height: 5px; }
+            .play-indicator { width: 12px; height: 12px; top: -3px; }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -337,8 +337,8 @@
             .menu a { font-size: 0.9rem; }
             .hint { font-size: 1rem; bottom: 10%; }
             .beat h3 { font-size: 1rem; }
-            .custom-player { height: 6px; }
-            .play-indicator { width: 14px; height: 14px; top: -4px; }
+            .custom-player { height: 4px; }
+            .play-indicator { width: 10px; height: 10px; top: -3px; }
         }
     </style>
 </head>
@@ -468,7 +468,7 @@
             document.body.style.overflow = "auto";
             isSectionOpen = true;
             const background = document.getElementById("background");
-            background.style.transform = `translate(${lastMoveX}px, ${moveY}px)`;
+            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
         }
