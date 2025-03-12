@@ -82,27 +82,28 @@
         }
         .menu {
             position: fixed;
-            top: 20px; /* Отступ сверху */
-            left: 70px; /* Отступ слева с местом для логотипа */
+            top: 20px;
+            left: 70px;
             display: flex;
-            gap: 30px; /* Расстояние между пунктами */
+            gap: 30px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
-            z-index: 12; /* Выше всего */
+            z-index: 12;
         }
         .menu.active {
             opacity: 1;
             pointer-events: auto;
         }
         .menu a {
-            font-size: 1.2rem; /* Небольшой размер, как на xAI */
+            font-size: 1rem; /* 16px, как на x.ai/grok */
             font-weight: 600;
-            color: #ffffff;
-            opacity: 0.9; /* Лёгкая прозрачность */
+            color: #b0b8c4; /* Серый цвет текста как на x.ai/grok */
+            text-transform: uppercase; /* Большие буквы */
+            opacity: 0.9;
             text-decoration: none;
             position: relative;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
         }
         .menu a::after {
             content: '';
@@ -114,14 +115,16 @@
             background: #ffffff;
             transition: width 0.3s ease-in-out;
         }
-        .menu a:hover::after {
-            width: 100%; /* Линия растёт при наведении */
-        }
         .menu a:hover {
-            opacity: 1; /* Полная видимость при наведении */
+            opacity: 1;
+            color: #ffffff; /* Белый при наведении */
+        }
+        .menu a:hover::after {
+            width: 100%;
         }
         .menu a:active {
-            animation: clickFade 0.4s ease-out forwards; /* Анимация при клике */
+            color: #ffffff; /* Белый при нажатии */
+            animation: clickFade 0.4s ease-out forwards;
         }
         @keyframes clickFade {
             0% { opacity: 1; transform: scale(1); }
