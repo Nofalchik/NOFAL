@@ -50,7 +50,6 @@
         .beat audio {
             width: 100%;
             margin-top: 10px;
-            pointer-events: none;
         }
         .beat button {
             background: #00ffcc;
@@ -129,12 +128,6 @@
                 requestAnimationFrame(drawParticles);
             }
             drawParticles();
-
-            document.querySelectorAll('audio').forEach(audio => {
-                audio.addEventListener('play', function() {
-                    audio.muted = false;
-                });
-            });
         }
     </script>
 </head>
@@ -149,22 +142,6 @@
                 <source src="guitar.mp3" type="audio/mpeg">
             </audio>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
-        </div>
-        <div class="beat">
-            <h3>Beat 2</h3>
-            <p>$5</p>
-            <audio controls controlsList="nodownload">
-                <source src="beat2.mp3" type="audio/mpeg">
-            </audio>
-            <button onclick="buyBeat('Beat 2')">Buy Now</button>
-        </div>
-        <div class="beat">
-            <h3>Beat 3</h3>
-            <p>$5</p>
-            <audio controls controlsList="nodownload">
-                <source src="beat3.mp3" type="audio/mpeg">
-            </audio>
-            <button onclick="buyBeat('Beat 3')">Buy Now</button>
         </div>
     </div>
     <a href="index.html" class="back-button">Back to Main Menu</a>
