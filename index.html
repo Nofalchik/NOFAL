@@ -15,11 +15,14 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            animation: bgMove 20s infinite alternate ease-in-out;
         }
-        @keyframes bgMove {
-            from { background-position: center top; }
-            to { background-position: center bottom; }
+        .blurred-bg {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            backdrop-filter: blur(10px);
+            transition: backdrop-filter 1s ease-in-out;
+            z-index: -1;
         }
         .intro {
             position: fixed;
@@ -88,9 +91,19 @@
                 font-size: 1.2rem;
             }
         }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
+    <canvas id="particles"></canvas>
+    <div class="blurred-bg" id="blurred-bg"></div>
     <div class="intro" id="intro">
         <h1 id="name" onclick="enterSite()">NOFAL</h1>
     </div>
@@ -105,8 +118,11 @@
         function enterSite() {
             let intro = document.getElementById("intro");
             let menu = document.getElementById("menu");
+            let blurredBg = document.getElementById("blurred-bg");
             
             intro.style.opacity = "0";
+            blurredBg.style.backdropFilter = "blur(0px)";
+            
             setTimeout(() => {
                 intro.style.display = "none";
                 menu.style.display = "flex";
@@ -115,6 +131,53 @@
                 }, 100);
             }, 1000);
         }
+
+        function createParticles() {
+            const canvas = document.getElementById("particles");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray = [];
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 3 - 1.5;
+                    this.speedY = Math.random() * 3 - 1.5;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = "rgba(0,255,204,0.8)";
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            function init() {
+                particlesArray = [];
+                for (let i = 0; i < 100; i++) {
+                    particlesArray.push(new Particle());
+                }
+            }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particlesArray.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            init();
+            animate();
+        }
+        createParticles();
     </script>
 </body>
 </html>
