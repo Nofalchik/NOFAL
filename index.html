@@ -146,23 +146,25 @@
         }
         /* Стили магазина */
         .shop-container {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
             padding: 100px 20px 50px;
-            position: relative;
             z-index: 5;
             font-family: 'Orbitron', sans-serif;
             opacity: 0;
-            transform: translateY(20px); /* Начальное смещение вниз */
-            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out; /* Плавный переход */
-            min-height: 100vh;
+            transform: translateY(50px); /* Начальное смещение вниз */
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out; /* Более плавный переход */
+            pointer-events: none; /* Чтобы не мешал до активации */
         }
         .shop-container.active {
-            display: flex;
             opacity: 1;
-            transform: translateY(0); /* Поднимается на место */
+            transform: translateY(0);
+            pointer-events: auto;
         }
         .beat {
             background: rgba(0, 0, 0, 0.7);
@@ -410,6 +412,8 @@
             resetMenuColors();
             link.classList.add("active");
             currentActiveLink = link;
+            const shop = document.getElementById("shop");
+            shop.classList.remove("active"); // Скрываем магазин при переходе
             setTimeout(() => {
                 window.location.href = link.href;
             }, 400);
@@ -422,7 +426,10 @@
             link.classList.add("active");
             currentActiveLink = link;
             const shop = document.getElementById("shop");
-            shop.classList.add("active");
+            shop.style.display = "flex"; // Сначала включаем display
+            setTimeout(() => {
+                shop.classList.add("active"); // Затем запускаем анимацию
+            }, 10); // Небольшая задержка для корректной работы transition
             document.body.style.overflow = "auto";
         }
 
@@ -549,6 +556,10 @@
                     touchHint.classList.remove("visible");
                 }
             });
+
+            // Изначально скрываем магазин
+            const shop = document.getElementById("shop");
+            shop.style.display = "none";
         };
     </script>
 </body>
