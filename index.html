@@ -29,7 +29,7 @@
             position: fixed;
             width: 100%;
             height: 100vh;
-            backdrop-filter: blur(1px);
+            backdrop-filter: blur(0.5px);
             transition: backdrop-filter 1s ease-in-out;
             z-index: -1;
         }
@@ -118,6 +118,7 @@
 <body>
     <div class="background-container" id="background"></div>
     <canvas id="particles"></canvas>
+    <canvas id="snow"></canvas>
     <div class="blurred-bg" id="blurred-bg"></div>
     <div class="intro" id="intro">
         <h1 id="name" onclick="enterSite()">NOFAL</h1>
@@ -148,6 +149,31 @@
                 }, 100);
             }, 1000);
         }
+
+        const snowCanvas = document.getElementById("snow");
+        const ctx = snowCanvas.getContext("2d");
+        snowCanvas.width = window.innerWidth;
+        snowCanvas.height = window.innerHeight;
+        const snowflakes = Array.from({ length: 100 }, () => ({
+            x: Math.random() * snowCanvas.width,
+            y: Math.random() * snowCanvas.height,
+            radius: Math.random() * 3 + 1,
+            speed: Math.random() * 1 + 0.5
+        }));
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+            snowflakes.forEach(flake => {
+                ctx.beginPath();
+                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+                ctx.fill();
+                flake.y += flake.speed;
+                if (flake.y > snowCanvas.height) flake.y = 0;
+            });
+            requestAnimationFrame(drawSnow);
+        }
+        drawSnow();
     </script>
 </body>
 </html>
