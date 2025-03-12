@@ -104,7 +104,7 @@
             margin: 10px auto;
         }
         .bar {
-            width: 8px;
+            width:  Statistics8px;
             height: 10px;
             background: #00ffcc;
             margin: 0 3px;
@@ -146,16 +146,16 @@
         .touch-hint {
             display: none;
             position: absolute;
-            top: 30%; /* Подняли выше центра */
+            bottom: 15%; /* Переместили вниз */
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 255, 204, 0.2);
+            transform: translate(-50%, 50%); /* Центрируем по горизонтали и чуть смещаем вверх */
+            background: rgba(0, 255, 204, 0.15); /* Сделали чуть прозрачнее */
             color: #00ffcc;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             text-shadow: 0 0 5px #00ffcc;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
             pointer-events: none;
             z-index: 2;
         }
@@ -178,7 +178,7 @@
             @keyframes bounce { 0% { height: 8px; } 100% { height: 30px; } }
             .back-button { font-size: 1rem; padding: 8px 15px; }
             h1 { font-size: 1.5rem; }
-            .touch-hint { display: block; } /* Включаем на мобильных */
+            .touch-hint { display: block; }
         }
         @media (max-width: 480px) {
             .beat { width: 100%; }
@@ -186,7 +186,7 @@
             .beat p { font-size: 0.9rem; }
             .equalizer { height: 25px; width: 60px; }
             .bar { width: 5px; margin: 0 1px; }
-            .touch-hint { font-size: 0.9rem; padding: 8px 12px; top: 25%; } /* Ещё выше для маленьких экранов */
+            .touch-hint { font-size: 0.8rem; padding: 5px 8px; bottom: 12%; }
         }
     </style>
     <script>
