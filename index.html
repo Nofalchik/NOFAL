@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мухамед Нофал - Музыкант</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;700&display=swap');
         body {
-            font-family: 'Orbitron', sans-serif;
-            background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0') no-repeat center center fixed;
+            font-family: 'Poppins', sans-serif;
+            background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #ffffff;
             text-align: center;
             margin: 0;
             padding: 0;
             overflow: hidden;
+            animation: bgMove 20s infinite alternate ease-in-out;
+        }
+        @keyframes bgMove {
+            from { background-position: center top; }
+            to { background-position: center bottom; }
         }
         .intro {
             position: fixed;
@@ -23,7 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.8);
             transition: opacity 1s ease-in-out;
         }
         .intro h1 {
@@ -45,15 +50,19 @@
         .menu a {
             display: block;
             font-size: 2rem;
-            color: #00ffcc;
             text-decoration: none;
-            margin: 10px;
+            margin: 15px;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            padding: 10px;
+            border-radius: 8px;
         }
+        .menu a:nth-child(1) { color: #ff6666; background: rgba(255, 102, 102, 0.2); }
+        .menu a:nth-child(2) { color: #66ff66; background: rgba(102, 255, 102, 0.2); }
+        .menu a:nth-child(3) { color: #668cff; background: rgba(102, 140, 255, 0.2); }
         .menu a:hover {
-            text-decoration: underline;
+            background: rgba(255, 255, 255, 0.3);
         }
         .show-menu a {
             opacity: 1;
@@ -67,9 +76,9 @@
     </div>
     
     <div class="menu" id="menu">
-        <a href="#" onclick="showContent('bio')">Биография</a>
-        <a href="#" onclick="showContent('socials')">Соц сети</a>
-        <a href="#" onclick="showContent('shop')">Магазин</a>
+        <a href="#bio" onclick="showContent('bio')">Биография</a>
+        <a href="#socials" onclick="showContent('socials')">Соц сети</a>
+        <a href="#shop" onclick="showContent('shop')">Магазин</a>
     </div>
 
     <script>
@@ -85,7 +94,13 @@
         }
 
         function showContent(section) {
-            alert("Открывается раздел: " + section); // Здесь можно добавить логику перехода
+            if (section === 'bio') {
+                alert("Мухамед Нофал - музыкант из Одессы, Украина. 22 года. Дата рождения 15.01.2003.");
+            } else if (section === 'socials') {
+                alert("Instagram: @nofalchk\nYouTube: @nofalchk\nTwitch: nofal_of");
+            } else if (section === 'shop') {
+                alert("Здесь будет магазин с товарами.");
+            }
         }
     </script>
 </body>
