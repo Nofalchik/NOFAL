@@ -6,6 +6,8 @@
     <title>Мухамед Нофал - Музыкант</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;700&display=swap');
+        
+        /* Основные стили для body */
         body {
             font-family: 'Poppins', sans-serif;
             background: url('background.jpg') no-repeat center center fixed;
@@ -16,6 +18,8 @@
             padding: 0;
             overflow: hidden;
         }
+        
+        /* Контейнер с фоновым изображением, которое слегка смещается при движении мыши */
         .background-container {
             position: fixed;
             width: 110%;
@@ -25,6 +29,8 @@
             transition: transform 0.1s linear;
             z-index: -2;
         }
+        
+        /* Размытие фона для эффекта глубины */
         .blurred-bg {
             position: fixed;
             width: 100%;
@@ -33,6 +39,8 @@
             transition: backdrop-filter 1s ease-in-out;
             z-index: -1;
         }
+        
+        /* Вводный экран с названием */
         .intro {
             position: fixed;
             width: 100%;
@@ -44,6 +52,8 @@
             transition: opacity 1s ease-in-out;
             z-index: 10;
         }
+        
+        /* Стили для названия "NOFAL" с эффектом свечения */
         .intro h1 {
             font-size: 5rem;
             font-weight: bold;
@@ -53,33 +63,11 @@
             animation: fadeIn 2s forwards, neonGlow 1.5s infinite alternate;
             text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc;
         }
-        .intro h1:hover {
-            transform: scale(1.1);
-            transition: transform 0.3s ease-in-out;
-        }
+        
+        /* Анимация свечения текста */
         @keyframes neonGlow {
-            from {
-                text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc;
-            }
-            to {
-                text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 40px #00ffcc;
-            }
-        }
-        .hint {
-            position: absolute;
-            bottom: 15%;
-            font-size: 1.2rem;
-            color: #ffffff;
-            opacity: 0.7;
-            animation: blink 1.5s infinite;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+            from { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc; }
+            to { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 40px #00ffcc; }
         }
     </style>
 </head>
@@ -88,19 +76,22 @@
     <canvas id="particles"></canvas>
     <canvas id="snow"></canvas>
     <div class="blurred-bg" id="blurred-bg"></div>
+    
     <div class="intro" id="intro">
         <h1 id="name" onclick="enterSite()">NOFAL</h1>
         <div class="hint">Нажмите, чтобы войти</div>
     </div>
+    
     <script>
         const canvas = document.getElementById('snow');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
+        
         let particlesArray = [];
         const numberOfParticles = 100;
-
+        
+        // Класс для создания снежинок
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
@@ -109,18 +100,23 @@
                 this.speedX = Math.random() * 1 - 0.5;
                 this.speedY = Math.random() * 1 + 0.5;
             }
+            
             update(mouseX, mouseY) {
+                // Если есть движение мыши, снежинки слегка притягиваются к указателю
                 if (mouseX && mouseY) {
                     this.x += (mouseX - this.x) * 0.01;
                     this.y += (mouseY - this.y) * 0.01;
                 } else {
                     this.y += this.speedY;
                 }
+                
+                // Перезапуск снежинок при выходе за границы экрана
                 if (this.y > canvas.height) {
                     this.y = 0 - this.size;
                     this.x = Math.random() * canvas.width;
                 }
             }
+            
             draw() {
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
                 ctx.beginPath();
@@ -128,14 +124,16 @@
                 ctx.fill();
             }
         }
-
+        
+        // Создание массива снежинок
         function init() {
             particlesArray = [];
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
         }
-
+        
+        // Функция анимации, обновляет и отрисовывает снежинки
         function animate(mouseX, mouseY) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particlesArray.forEach(particle => {
@@ -144,10 +142,11 @@
             });
             requestAnimationFrame(() => animate(mouseX, mouseY));
         }
-
+        
         init();
         animate();
-
+        
+        // Добавление эффекта взаимодействия с мышью
         window.addEventListener('mousemove', (event) => {
             animate(event.clientX, event.clientY);
         });
