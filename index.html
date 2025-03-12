@@ -125,20 +125,24 @@
             let intro = document.getElementById("intro");
             let menu = document.getElementById("menu");
             let blurredBg = document.getElementById("blurred-bg");
+            let particlesCanvas = document.getElementById("particles");
             
             intro.style.opacity = "0";
             blurredBg.style.backdropFilter = "blur(0px)";
+            particlesCanvas.classList.add("transition-effect");
             
             setTimeout(() => {
                 intro.style.display = "none";
                 menu.style.display = "flex";
+                particlesCanvas.classList.remove("transition-effect");
+                particlesCanvas.classList.add("snow-effect");
                 setTimeout(() => {
                     menu.style.opacity = "1";
                 }, 100);
-            }, 1000);
+            }, 2000);
         }
 
-        function createParticles() {
+        function createParticles(color) {
             const canvas = document.getElementById("particles");
             const ctx = canvas.getContext("2d");
             canvas.width = window.innerWidth;
@@ -150,17 +154,17 @@
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
                     this.size = Math.random() * 3 + 1;
-                    this.speedX = Math.random() * 3 - 1.5;
-                    this.speedY = Math.random() * 3 - 1.5;
+                    this.speedY = Math.random() * 1.5 + 0.5;
                 }
                 update() {
-                    this.x += this.speedX;
                     this.y += this.speedY;
-                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                    if (this.y > canvas.height) {
+                        this.y = 0;
+                        this.x = Math.random() * canvas.width;
+                    }
                 }
                 draw() {
-                    ctx.fillStyle = "rgba(0,255,204,0.8)";
+                    ctx.fillStyle = color;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
@@ -183,7 +187,7 @@
             init();
             animate();
         }
-        createParticles();
+        createParticles("rgba(0,255,204,0.8)");
     </script>
 </body>
 </html>
