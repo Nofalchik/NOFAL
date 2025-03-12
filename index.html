@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOFAL</title>
+    <!-- Подключаем Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400&display=swap');
@@ -281,14 +283,25 @@
             margin: 0 0 20px 0;
         }
         .socials-container a {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
             color: #ffffff;
             text-decoration: none;
             margin: 10px 0;
             transition: color 0.3s ease-in-out;
         }
+        .socials-container a i {
+            margin-right: 10px;
+            font-size: 24px;
+            color: #ffffff;
+            transition: color 0.3s ease-in-out;
+        }
         .socials-container a:hover {
+            color: #66ff66;
+        }
+        .socials-container a:hover i {
             color: #66ff66;
         }
         .touch-hint {
@@ -371,6 +384,9 @@
             .socials-container a {
                 font-size: 1.3rem;
             }
+            .socials-container a i {
+                font-size: 20px;
+            }
         }
         @media (max-width: 480px) {
             .intro h1 {
@@ -426,6 +442,9 @@
             .socials-container a {
                 font-size: 1.2rem;
             }
+            .socials-container a i {
+                font-size: 18px;
+            }
             .touch-hint {
                 font-size: 0.85rem;
                 padding: 5px 10px;
@@ -454,9 +473,9 @@
     <!-- Контейнер для Socials -->
     <div class="content-container socials-container" id="socials">
         <h1>Социальные сети</h1>
-        <a href="https://www.instagram.com/nofalchk" target="_blank">Instagram</a>
-        <a href="https://www.youtube.com/@nofalchk" target="_blank">YouTube</a>
-        <a href="https://www.twitch.tv/nofal_of" target="_blank">Twitch</a>
+        <a href="https://www.instagram.com/nofalchk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://www.youtube.com/@nofalchk" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+        <a href="https://www.twitch.tv/nofal_of" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
     </div>
     <!-- Контейнер для Shop -->
     <div class="content-container shop-container" id="shop">
