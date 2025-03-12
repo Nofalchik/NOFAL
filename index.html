@@ -13,12 +13,12 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #1a1a1a; /* Запасной цвет для скрытия краёв */
+            background-color: #1a1a1a; /* Запасной цвет */
         }
         .background-container {
             position: fixed;
-            width: 150%; /* Ещё больше запас */
-            height: 150vh; /* Ещё больше запас */
+            width: 200%; /* Увеличил до 200% */
+            height: 200vh; /* Увеличил до 200vh */
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
@@ -114,7 +114,7 @@
         }
         .menu a:nth-child(2) {
             color: #00ff00;
-        }
+sess        }
         .menu a:nth-child(3) {
             color: #0000ff;
         }
@@ -171,18 +171,24 @@
     </div>
 
     <script>
-        // Движение фона (замедленное)
+        // Движение фона с ограничением
         document.addEventListener("mousemove", (e) => {
             const background = document.getElementById("background");
-            let moveX = (e.clientX / window.innerWidth - 0.5) * 10; // Уменьшил с 20 до 10
-            let moveY = (e.clientY / window.innerHeight - 0.5) * 10; // Уменьшил с 20 до 10
+            let moveX = (e.clientX / window.innerWidth - 0.5) * 10; // Замедленное движение
+            let moveY = (e.clientY / window.innerHeight - 0.5) * 10;
+            // Ограничиваем смещение
+            moveX = Math.max(Math.min(moveX, 50), -50); // Лимит ±50px
+            moveY = Math.max(Math.min(moveY, 50), -50); // Лимит ±50px
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
         document.addEventListener("touchmove", (e) => {
             const touch = e.touches[0];
             const background = document.getElementById("background");
-            let moveX = (touch.clientX / window.innerWidth - 0.5) * 10; // Уменьшил с 20 до 10
-            let moveY = (touch.clientY / window.innerHeight - 0.5) * 10; // Уменьшил с 20 до 10
+            let moveX = (touch.clientX / window.innerWidth - 0.5) * 10;
+            let moveY = (touch.clientY / window.innerHeight - 0.5) * 10;
+            // Ограничиваем смещение
+            moveX = Math.max(Math.min(moveX, 50), -50); // Лимит ±50px
+            moveY = Math.max(Math.min(moveY, 50), -50); // Лимит ±50px
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
