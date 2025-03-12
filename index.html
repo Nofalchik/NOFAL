@@ -139,6 +139,13 @@
             background.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
+        window.addEventListener("deviceorientation", (event) => {
+            const background = document.getElementById("background");
+            let moveX = event.gamma * 2;
+            let moveY = event.beta * 2;
+            background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
         function enterSite() {
             document.getElementById("intro").style.opacity = "0";
             setTimeout(() => {
@@ -149,41 +156,6 @@
                 }, 100);
             }, 1000);
         }
-
-        const snowCanvas = document.getElementById("snow");
-        const ctx = snowCanvas.getContext("2d");
-        snowCanvas.width = window.innerWidth;
-        snowCanvas.height = window.innerHeight;
-        const snowflakes = Array.from({ length: 100 }, () => ({
-            x: Math.random() * snowCanvas.width,
-            y: Math.random() * snowCanvas.height,
-            radius: Math.random() * 3 + 1,
-            speed: Math.random() * 1 + 0.5,
-            directionX: Math.random() * 2 - 1
-        }));
-
-        document.addEventListener("mousemove", (e) => {
-            snowflakes.forEach(flake => {
-                flake.directionX = (e.clientX / window.innerWidth - 0.5) * 2;
-            });
-        });
-
-        function drawSnow() {
-            ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-            snowflakes.forEach(flake => {
-                ctx.beginPath();
-                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-                ctx.fill();
-                flake.y += flake.speed;
-                flake.x += flake.directionX;
-                if (flake.y > snowCanvas.height) flake.y = 0;
-                if (flake.x > snowCanvas.width) flake.x = 0;
-                if (flake.x < 0) flake.x = snowCanvas.width;
-            });
-            requestAnimationFrame(drawSnow);
-        }
-        drawSnow();
     </script>
 </body>
 </html>
