@@ -256,6 +256,21 @@
             0% { box-shadow: 0 0 5px #00ffcc; }
             100% { box-shadow: 0 0 15px #00ffaa; }
         }
+        /* Стили для About Me */
+        .about-container {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .about-container h1 {
+            font-size: 3rem;
+            color: #00ffcc;
+            margin: 0 0 20px 0;
+        }
+        .about-container p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
         /* Стили для Socials */
         .socials-container {
             font-family: 'Montserrat', sans-serif;
@@ -344,6 +359,12 @@
             .beat:hover .bar:nth-child(3) { height: 25px; }
             .beat:hover .bar:nth-child(4) { height: 18px; }
             @keyframes bounce { 0% { height: 7px; } 100% { height: 25px; } }
+            .about-container h1 {
+                font-size: 2.5rem;
+            }
+            .about-container p {
+                font-size: 1.3rem;
+            }
             .socials-container h1 {
                 font-size: 2.5rem;
             }
@@ -393,6 +414,12 @@
                 height: 6px;
                 margin: 0 1px;
             }
+            .about-container h1 {
+                font-size: 2rem;
+            }
+            .about-container p {
+                font-size: 1.2rem;
+            }
             .socials-container h1 {
                 font-size: 2rem;
             }
@@ -419,6 +446,18 @@
         <a href="#" onclick="showSection(event, this, 'socials')">Socials</a>
         <a href="#" onclick="showSection(event, this, 'shop')">Shop</a>
     </div>
+    <!-- Контейнер для About Me -->
+    <div class="content-container about-container" id="about">
+        <h1>Биография</h1>
+        <p>I don't know, what if I'm a robot?</p>
+    </div>
+    <!-- Контейнер для Socials -->
+    <div class="content-container socials-container" id="socials">
+        <h1>Социальные сети</h1>
+        <a href="https://www.instagram.com/nofalchk" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com/@nofalchk" target="_blank">YouTube</a>
+        <a href="https://www.twitch.tv/nofal_of" target="_blank">Twitch</a>
+    </div>
     <!-- Контейнер для Shop -->
     <div class="content-container shop-container" id="shop">
         <div class="beat">
@@ -435,17 +474,6 @@
             </div>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
-    </div>
-    <!-- Контейнер для Socials -->
-    <div class="content-container socials-container" id="socials">
-        <h1>Социальные сети</h1>
-        <a href="https://www.instagram.com/nofalchk" target="_blank">Instagram</a>
-        <a href="https://www.youtube.com/@nofalchk" target="_blank">YouTube</a>
-        <a href="https://www.twitch.tv/nofal_of" target="_blank">Twitch</a>
-    </div>
-    <!-- Контейнер для About Me (будет добавлен после получения кода) -->
-    <div class="content-container" id="about">
-        <!-- Пока пусто, жду код -->
     </div>
     <div id="touch-hint" class="touch-hint">Зажми карточку, чтобы прослушать</div>
 
