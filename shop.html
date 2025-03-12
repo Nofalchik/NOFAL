@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop - Nofal</title>
+    <title>Shop - Muhamed Nofal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400&display=swap');
         body {
             font-family: 'Orbitron', sans-serif;
-            background: url('background.jpg') no-repeat center center fixed, #1a1a1a; /* Запасной тёмный фон */
+            background: url('background.jpg') no-repeat center center fixed, #1a1a1a;
             background-size: cover;
             color: #ffffff;
             text-align: center;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            transition: background-position 0.1s ease; /* Плавное движение фона */
         }
         .shop-container {
             display: flex;
@@ -165,6 +166,9 @@
             window.location.href = `https://t.me/nfchik?text=Хочу купить ${beatName}`;
         }
 
+        // Флаг для активации аудио
+        let audioInitialized = false;
+
         window.onload = function() {
             const canvas = document.getElementById("particles");
             const ctx = canvas.getContext("2d");
@@ -172,64 +176,72 @@
             canvas.height = window.innerHeight;
 
             const particles = [];
-            const particleCount = 30; // Меньше частиц для эффекта редкой пыли
-            let mouseX = null; // Мышь не активна по умолчанию
+            const particleCount = 30;
+            let mouseX = null;
             let mouseY = null;
 
             // Создание частиц-пыли
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
-                    y: Math.random() * -canvas.height - 50, // Начинаются выше экрана
-                    radius: Math.random() * 1 + 0.5, // Маленькие
-                    speedY: Math.random() * 0.3 + 0.1, // Очень медленное падение
-                    driftX: (Math.random() - 0.5) * 0.05 // Естественное колебание
+                    y: Math.random() * -canvas.height - 50,
+                    radius: Math.random() * 1 + 0.5,
+                    speedY: Math.random() * 0.3 + 0.1,
+                    driftX: (Math.random() - 0.5) * 0.05
                 });
             }
 
-            // Отслеживание мыши
-            canvas.addEventListener('mousemove', (e) => {
+            // Отслеживание мыши для частиц и фона
+            document.addEventListener('mousemove', (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
+                updateBackgroundPosition(mouseX, mouseY); // Обновляем фон
             });
-            canvas.addEventListener('mouseleave', () => {
-                mouseX = null; // Отключаем влияние, если мышь ушла
-                mouseY = null;
-            });
-
-            // Отслеживание касаний
-            canvas.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                const touch = e.touches[0];
-                mouseX = touch.clientX;
-                mouseY = touch.clientY;
-            });
-            canvas.addEventListener('touchend', () => {
+            document.addEventListener('mouseleave', () => {
                 mouseX = null;
                 mouseY = null;
             });
 
+            // Отслеживание касаний
+            document.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                mouseX = touch.clientX;
+                mouseY = touch.clientY;
+                updateBackgroundPosition(mouseX, mouseY); // Обновляем фон
+            });
+            document.addEventListener('touchend', () => {
+                mouseX = null;
+                mouseY = null;
+            });
+
+            // Функция для движения фона
+            function updateBackgroundPosition(x, y) {
+                if (x !== null && y !== null) {
+                    const moveX = (x / window.innerWidth - 0.5) * 50; // Максимальное смещение 50px
+                    const moveY = (y / window.innerHeight - 0.5) * 50;
+                    document.body.style.backgroundPosition = `${50 - moveX}% ${50 - moveY}%`;
+                }
+            }
+
             function drawParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#b0c4de"; // Цвет пыли с лёгким голубым оттенком
+                ctx.fillStyle = "#b0c4de";
 
                 particles.forEach(p => {
-                    // Лёгкое влияние мыши
                     if (mouseX !== null && mouseY !== null) {
                         const dx = mouseX - p.x;
                         const dy = mouseY - p.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < 300) { // Влияние в радиусе 300px
-                            p.driftX += dx / distance * 0.02; // Очень слабое смещение
+                        if (distance < 300) {
+                            p.driftX += dx / distance * 0.02;
                         }
                     }
 
-                    // Движение частиц
                     p.x += p.driftX;
                     p.y += p.speedY;
-                    p.driftX *= 0.98; // Затухание горизонтального движения
+                    p.driftX *= 0.98;
 
-                    // Если частица упала ниже экрана, переместить вверх
                     if (p.y > canvas.height + 50) {
                         p.y = Math.random() * -canvas.height - 50;
                         p.x = Math.random() * canvas.width;
@@ -244,26 +256,45 @@
             }
             drawParticles();
 
-            // Предпрослушивание при наведении
+            // Активация аудио после первого взаимодействия
+            function initializeAudio() {
+                if (!audioInitialized) {
+                    audioInitialized = true;
+                    document.removeEventListener('click', initializeAudio);
+                    document.removeEventListener('touchstart', initializeAudio);
+                }
+            }
+            document.addEventListener('click', initializeAudio);
+            document.addEventListener('touchstart', initializeAudio);
+
+            // Предпрослушивание
             const beats = document.querySelectorAll('.beat');
             beats.forEach(beat => {
                 const audio = beat.querySelector('audio');
                 beat.addEventListener('mouseover', () => {
-                    audio.currentTime = 0;
-                    audio.play();
+                    if (audioInitialized) {
+                        audio.currentTime = 0;
+                        audio.play();
+                    }
                 });
                 beat.addEventListener('mouseout', () => {
-                    audio.pause();
-                    audio.currentTime = 0;
+                    if (audioInitialized) {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }
                 });
                 beat.addEventListener('touchstart', (e) => {
                     e.preventDefault();
-                    audio.currentTime = 0;
-                    audio.play();
+                    if (audioInitialized) {
+                        audio.currentTime = 0;
+                        audio.play();
+                    }
                 });
                 beat.addEventListener('touchend', () => {
-                    audio.pause();
-                    audio.currentTime = 0;
+                    if (audioInitialized) {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }
                 });
             });
         }
