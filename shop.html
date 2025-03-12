@@ -128,6 +128,20 @@
                 requestAnimationFrame(drawParticles);
             }
             drawParticles();
+
+            // Добавляем предпрослушивание при наведении
+            const beats = document.querySelectorAll('.beat');
+            beats.forEach(beat => {
+                const audio = beat.querySelector('audio');
+                beat.addEventListener('mouseover', () => {
+                    audio.currentTime = 0; // Начинаем с начала
+                    audio.play();
+                });
+                beat.addEventListener('mouseout', () => {
+                    audio.pause();
+                    audio.currentTime = 0; // Сбрасываем на начало
+                });
+            });
         }
     </script>
 </head>
@@ -142,6 +156,15 @@
                 <source src="guitar.mp3" type="audio/mpeg">
             </audio>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
+        </div>
+        <!-- Для теста добавлю ещё один бит -->
+        <div class="beat">
+            <h3>Beat 2</h3>
+            <p>$10</p>
+            <audio controls controlsList="nodownload">
+                <source src="beat2.mp3" type="audio/mpeg">
+            </audio>
+            <button onclick="buyBeat('Beat 2')">Buy Now</button>
         </div>
     </div>
     <a href="index.html" class="back-button">Back to Main Menu</a>
