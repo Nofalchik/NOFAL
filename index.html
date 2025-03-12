@@ -156,16 +156,20 @@
         });
 
         function enterSite() {
-            document.getElementById("intro").style.opacity = "0";
-            setTimeout(() => {
+    const intro = document.getElementById("intro");
     const menu = document.getElementById("menu");
-    menu.style.display = "flex";
-    requestAnimationFrame(() => {
-        menu.style.opacity = "1";
-    });
-}, 1000);
 
+    intro.style.opacity = "0";
+    setTimeout(() => {
+        intro.style.display = "none";
+        menu.style.display = "flex";
+        menu.style.opacity = "0"; // Устанавливаем начальное значение
+        setTimeout(() => {
+            menu.style.opacity = "1";
+        }, 100); // Даем время на отрисовку
+    }, 1000);
 }
+
 
 
         const snowCanvas = document.getElementById("snow");
