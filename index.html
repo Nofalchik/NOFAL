@@ -7,6 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             color: #ffffff;
@@ -18,8 +19,8 @@
         }
         .background-container {
             position: fixed;
-            width: 100%; /* Убираем 200%, чтобы исключить лишнее масштабирование */
-            height: 100vh; /* Фиксируем на высоте экрана */
+            width: 100%;
+            height: 100vh;
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
@@ -144,27 +145,32 @@
             height: 100vh;
             z-index: -1;
         }
-        /* Стили магазина */
-        .shop-container {
+        /* Общие стили для контейнеров */
+        .content-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            flex-wrap: wrap;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
             gap: 20px;
             padding: 80px 20px 20px;
             z-index: 5;
-            font-family: 'Orbitron', sans-serif;
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
             pointer-events: none;
         }
-        .shop-container.active {
+        .content-container.active {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
+        }
+        /* Стили магазина */
+        .shop-container {
+            font-family: 'Orbitron', sans-serif;
         }
         .beat {
             background: rgba(0, 0, 0, 0.7);
@@ -250,6 +256,26 @@
             0% { box-shadow: 0 0 5px #00ffcc; }
             100% { box-shadow: 0 0 15px #00ffaa; }
         }
+        /* Стили для Socials */
+        .socials-container {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .socials-container h1 {
+            font-size: 3rem;
+            color: #66ff66;
+            margin: 0 0 20px 0;
+        }
+        .socials-container a {
+            display: block;
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: color 0.3s ease-in-out;
+        }
+        .socials-container a:hover {
+            color: #66ff66;
+        }
         .touch-hint {
             display: none;
             position: fixed;
@@ -287,7 +313,7 @@
             .menu a {
                 font-size: 1rem;
             }
-            .shop-container {
+            .content-container {
                 padding: 70px 10px 15px;
             }
             .beat {
@@ -318,6 +344,12 @@
             .beat:hover .bar:nth-child(3) { height: 25px; }
             .beat:hover .bar:nth-child(4) { height: 18px; }
             @keyframes bounce { 0% { height: 7px; } 100% { height: 25px; } }
+            .socials-container h1 {
+                font-size: 2.5rem;
+            }
+            .socials-container a {
+                font-size: 1.3rem;
+            }
         }
         @media (max-width: 480px) {
             .intro h1 {
@@ -335,7 +367,7 @@
                 font-size: 1rem;
                 bottom: 10%;
             }
-            .shop-container {
+            .content-container {
                 padding: 60px 10px 10px;
             }
             .beat {
@@ -361,6 +393,12 @@
                 height: 6px;
                 margin: 0 1px;
             }
+            .socials-container h1 {
+                font-size: 2rem;
+            }
+            .socials-container a {
+                font-size: 1.2rem;
+            }
             .touch-hint {
                 font-size: 0.85rem;
                 padding: 5px 10px;
@@ -377,11 +415,12 @@
         <div class="hint" id="hint">Click</div>
     </div>
     <div class="menu" id="menu">
-        <a href="bio.html" onclick="handleMenuClick(event, this)">About Me</a>
-        <a href="socials.html" onclick="handleMenuClick(event, this)">Socials</a>
-        <a href="#" onclick="showShop(event, this)">Shop</a>
+        <a href="#" onclick="showSection(event, this, 'about')">About Me</a>
+        <a href="#" onclick="showSection(event, this, 'socials')">Socials</a>
+        <a href="#" onclick="showSection(event, this, 'shop')">Shop</a>
     </div>
-    <div class="shop-container" id="shop">
+    <!-- Контейнер для Shop -->
+    <div class="content-container shop-container" id="shop">
         <div class="beat">
             <h3>Beat 1</h3>
             <p>$5</p>
@@ -397,16 +436,27 @@
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
     </div>
+    <!-- Контейнер для Socials -->
+    <div class="content-container socials-container" id="socials">
+        <h1>Социальные сети</h1>
+        <a href="https://www.instagram.com/nofalchk" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com/@nofalchk" target="_blank">YouTube</a>
+        <a href="https://www.twitch.tv/nofal_of" target="_blank">Twitch</a>
+    </div>
+    <!-- Контейнер для About Me (будет добавлен после получения кода) -->
+    <div class="content-container" id="about">
+        <!-- Пока пусто, жду код -->
+    </div>
     <div id="touch-hint" class="touch-hint">Зажми карточку, чтобы прослушать</div>
 
     <script>
-        // Движение фона только до открытия магазина
+        // Движение фона только до открытия секций
         let lastMoveX = 0;
         let lastMoveY = 0;
-        let isShopOpen = false;
+        let isSectionOpen = false;
 
         function updateBackground(e, isTouch = false) {
-            if (isShopOpen) return;
+            if (isSectionOpen) return;
             const background = document.getElementById("background");
             let moveX, moveY;
             if (isTouch) {
@@ -450,7 +500,7 @@
             }, 1000);
         }
 
-        // Управление активным пунктом меню
+        // Управление активным пунктом меню и секциями
         let currentActiveLink = null;
 
         function resetMenuColors() {
@@ -458,38 +508,29 @@
             links.forEach(link => link.classList.remove("active"));
         }
 
-        // Анимация клика по пункту меню (для перехода на другие страницы)
-        function handleMenuClick(event, link) {
-            event.preventDefault();
-            resetMenuColors();
-            link.classList.add("active");
-            currentActiveLink = link;
-            const shop = document.getElementById("shop");
-            shop.classList.remove("active");
-            isShopOpen = false;
-            const background = document.getElementById("background");
-            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`; // Фиксируем фон перед переходом
-            setTimeout(() => {
-                window.location.href = link.href;
-            }, 400);
+        function hideAllSections() {
+            const sections = document.querySelectorAll(".content-container");
+            sections.forEach(section => {
+                section.classList.remove("active");
+                section.style.display = "none";
+            });
         }
 
-        // Показ магазина с анимацией
-        function showShop(event, link) {
+        function showSection(event, link, sectionId) {
             event.preventDefault();
             resetMenuColors();
             link.classList.add("active");
             currentActiveLink = link;
-            const shop = document.getElementById("shop");
-            shop.style.display = "flex";
+            hideAllSections();
+            const section = document.getElementById(sectionId);
+            section.style.display = sectionId === "shop" ? "flex" : "block"; // Flex для Shop, block для других
             setTimeout(() => {
-                shop.classList.add("active");
+                section.classList.add("active");
             }, 10);
             document.body.style.overflow = "auto";
-            isShopOpen = true;
+            isSectionOpen = true;
             const background = document.getElementById("background");
-            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`; // Фиксируем фон
-            // Удаляем обработчики движения фона
+            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
         }
@@ -618,9 +659,11 @@
                 }
             });
 
-            // Изначально скрываем магазин
-            const shop = document.getElementById("shop");
-            shop.style.display = "none";
+            // Изначально скрываем все секции
+            const sections = document.querySelectorAll(".content-container");
+            sections.forEach(section => {
+                section.style.display = "none";
+            });
         };
     </script>
 </body>
