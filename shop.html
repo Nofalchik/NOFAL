@@ -90,6 +90,17 @@
             height: 100%;
             z-index: -1;
         }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffcc;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00ffcc;
+            display: none;
+        }
     </style>
     <script>
         function buyBeat(beatName) {
@@ -128,6 +139,15 @@
                 requestAnimationFrame(drawParticles);
             }
             drawParticles();
+
+            const audio = document.querySelector("audio");
+            const notification = document.getElementById("notification");
+            audio.addEventListener("play", function() {
+                setTimeout(() => {
+                    audio.pause();
+                    notification.style.display = "block";
+                }, 40000); // 15 секунд демо
+            });
         }
     </script>
 </head>
@@ -144,6 +164,7 @@
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
     </div>
+    <div id="notification" class="notification">Demo закончился! Купите бит, чтобы слушать полностью.</div>
     <a href="index.html" class="back-button">Back to Main Menu</a>
 </body>
 </html>
