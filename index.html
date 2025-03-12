@@ -153,7 +153,7 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            padding: 80px 20px 20px; /* Уменьшен нижний padding */
+            padding: 80px 20px 20px;
             z-index: 5;
             font-family: 'Orbitron', sans-serif;
             opacity: 0;
@@ -168,27 +168,27 @@
         }
         .beat {
             background: rgba(0, 0, 0, 0.7);
-            padding: 15px; /* Уменьшен padding для компактности */
+            padding: 15px;
             border-radius: 15px;
             text-align: center;
-            width: 280px; /* Уменьшена ширина для телефонов */
+            width: 280px;
             box-shadow: 0 0 10px #00ffcc;
             transition: 0.3s;
             box-sizing: border-box;
             position: relative;
-            max-width: 90%; /* Ограничение по ширине для мобильных */
+            max-width: 90%;
         }
         .beat:hover {
             box-shadow: 0 0 20px #00ffaa;
         }
         .beat h3 {
             margin: 10px 0;
-            font-size: 1.4rem; /* Чуть меньше для мобильных */
+            font-size: 1.4rem;
             color: #00ffcc;
             text-shadow: 0 0 10px #00ffcc;
         }
         .beat p {
-            font-size: 1.1rem; /* Чуть меньше для мобильных */
+            font-size: 1.1rem;
             margin: 5px 0;
         }
         .beat audio {
@@ -197,10 +197,10 @@
         .beat button {
             background: #00ffcc;
             color: #000;
-            padding: 8px 12px; /* Уменьшен padding для компактности */
+            padding: 8px 12px;
             border: none;
             cursor: pointer;
-            font-size: 0.9rem; /* Уменьшен шрифт */
+            font-size: 0.9rem;
             border-radius: 5px;
             transition: 0.3s;
             width: 100%;
@@ -213,13 +213,13 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            height: 35px; /* Уменьшена высота */
-            width: 80px; /* Уменьшена ширина */
-            margin: 8px auto; /* Уменьшен отступ */
+            height: 35px;
+            width: 80px;
+            margin: 8px auto;
         }
         .bar {
-            width: 6px; /* Уменьшена ширина */
-            height: 8px; /* Уменьшена начальная высота */
+            width: 6px;
+            height: 8px;
             background: #00ffcc;
             margin: 0 2px;
             border-radius: 5px;
@@ -288,7 +288,7 @@
                 font-size: 1rem;
             }
             .shop-container {
-                padding: 70px 10px 15px; /* Уменьшены отступы для мобильных */
+                padding: 70px 10px 15px;
             }
             .beat {
                 width: 85%;
@@ -403,8 +403,10 @@
         // Движение фона
         let lastMoveX = 0;
         let lastMoveY = 0;
+        let isShopOpen = false;
 
         function updateBackground(e, isTouch = false) {
+            if (isShopOpen) return; // Блокируем движение фона, если магазин открыт
             const background = document.getElementById("background");
             let moveX, moveY;
             if (isTouch) {
@@ -464,6 +466,7 @@
             currentActiveLink = link;
             const shop = document.getElementById("shop");
             shop.classList.remove("active");
+            isShopOpen = false; // Сбрасываем флаг магазина
             setTimeout(() => {
                 window.location.href = link.href;
             }, 400);
@@ -481,9 +484,9 @@
                 shop.classList.add("active");
             }, 10);
             document.body.style.overflow = "auto";
-            // Фиксируем положение фона
+            isShopOpen = true; // Устанавливаем флаг магазина
             const background = document.getElementById("background");
-            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
+            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`; // Фиксируем фон
         }
 
         // Покупка бита
