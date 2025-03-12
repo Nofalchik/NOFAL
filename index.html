@@ -106,6 +106,10 @@
             position: relative;
             transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
         }
+        .menu a.active {
+            color: #ffffff; /* Белый цвет для активного раздела */
+            opacity: 1;
+        }
         .menu a::after {
             content: '';
             position: absolute;
@@ -142,16 +146,17 @@
         }
         /* Стили магазина */
         .shop-container {
-            display: none; /* Скрыт по умолчанию */
+            display: none;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            padding: 50px 20px;
+            padding: 100px 20px 50px; /* Отступ сверху увеличен для выравнивания */
             position: relative;
             z-index: 5;
             font-family: 'Orbitron', sans-serif;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
+            min-height: 100vh; /* Чтобы магазин занимал всю высоту */
         }
         .shop-container.active {
             display: flex;
@@ -281,7 +286,7 @@
             .beat h3 { font-size: 1.2rem; }
             .beat p { font-size: 1rem; }
             .beat button { padding: 8px 10px; font-size: 0.9rem; }
-            .shop-container { padding: 20px 10px; gap: 15px; }
+            .shop-container { padding: 80px 10px 20px; gap: 15px; }
             .equalizer { height: 30px; width: 80px; }
             .bar { width: 6px; margin: 0 2px; }
             .beat:hover .bar:nth-child(1) { height: 25px; }
@@ -324,9 +329,9 @@
         <div class="hint" id="hint">Click</div>
     </div>
     <div class="menu" id="menu">
-        <a href="bio.html" onclick="handleMenuClick(event)">About Me</a>
-        <a href="socials.html" onclick="handleMenuClick(event)">Socials</a>
-        <a href="#" onclick="showShop(event)">Shop</a>
+        <a href="bio.html" onclick="handleMenuClick(event, this)">About Me</a>
+        <a href="socials.html" onclick="handleMenuClick(event, this)">Socials</a>
+        <a href="#" onclick="showShop(event, this)">Shop</a>
     </div>
     <div class="shop-container" id="shop">
         <div class="beat">
@@ -389,22 +394,34 @@
             }, 1000);
         }
 
-        // Анимация клика по пункту меню
-        function handleMenuClick(event) {
+        // Управление активным пунктом меню
+        let currentActiveLink = null;
+
+        function resetMenuColors() {
+            const links = document.querySelectorAll(".menu a");
+            links.forEach(link => link.classList.remove("active"));
+        }
+
+        // Анимация клика по пункту меню (для перехода на другие страницы)
+        function handleMenuClick(event, link) {
             event.preventDefault();
-            const link = event.target;
+            resetMenuColors();
             link.classList.add("active");
+            currentActiveLink = link;
             setTimeout(() => {
                 window.location.href = link.href;
             }, 400);
         }
 
         // Показ магазина
-        function showShop(event) {
+        function showShop(event, link) {
             event.preventDefault();
+            resetMenuColors();
+            link.classList.add("active");
+            currentActiveLink = link;
             const shop = document.getElementById("shop");
             shop.classList.add("active");
-            document.body.style.overflow = "auto"; // Разрешаем прокрутку
+            document.body.style.overflow = "auto";
         }
 
         // Покупка бита
@@ -490,7 +507,7 @@
             beats.forEach(beat => {
                 const audio = beat.querySelector('audio');
                 beat.addEventListener('mouseenter', () => {
-                    if (audioInitialized) {
+                    if (audioInitialized && document.getElementById("shop").classList.contains("active")) {
                         audio.currentTime = 0;
                         audio.play();
                     }
@@ -503,7 +520,7 @@
                 });
                 beat.addEventListener('touchstart', (e) => {
                     e.preventDefault();
-                    if (audioInitialized) {
+                    if (audioInitialized && document.getElementById("shop").classList.contains("active")) {
                         audio.currentTime = 0;
                         audio.play();
                         isAnyBeatPlaying = true;
@@ -515,14 +532,21 @@
                         audio.pause();
                         audio.currentTime = 0;
                         isAnyBeatPlaying = false;
-                        touchHint.classList.add('visible');
+                        if (document.getElementById("shop").classList.contains("active") && window.innerWidth <= 768) {
+                            touchHint.classList.add('visible');
+                        }
                     }
                 });
             });
 
-            if (window.innerWidth <= 768 && !isAnyBeatPlaying) {
-                touchHint.classList.add("visible");
-            }
+            // Показ подсказки только в разделе Shop на мобильных
+            document.getElementById("shop").addEventListener("transitionend", () => {
+                if (document.getElementById("shop").classList.contains("active") && window.innerWidth <= 768 && !isAnyBeatPlaying) {
+                    touchHint.classList.add("visible");
+                } else {
+                    touchHint.classList.remove("visible");
+                }
+            });
         };
     </script>
 </body>
