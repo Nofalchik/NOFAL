@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            transition: background-position 1s ease; /* Увеличил время для плавности */
+            animation: breathe 10s infinite ease-in-out;
         }
         .shop-container {
             display: flex;
@@ -35,6 +35,7 @@
             box-shadow: 0 0 10px #00ffcc;
             transition: 0.3s;
             box-sizing: border-box;
+            position: relative;
         }
         .beat:hover {
             box-shadow: 0 0 20px #00ffaa;
@@ -135,8 +136,33 @@
             0% { box-shadow: 0 0 5px #00ffcc; }
             100% { box-shadow: 0 0 15px #00ffaa; }
         }
-
-        /* Адаптивность */
+        /* Анимация "дыхания" фона */
+        @keyframes breathe {
+            0% { background-size: 100%; }
+            50% { background-size: 102%; }
+            100% { background-size: 100%; }
+        }
+        /* Подсказка для телефонов */
+        .touch-hint {
+            display: none;
+            position: absolute;
+            top: 30%; /* Подняли выше центра */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 255, 204, 0.2);
+            color: #00ffcc;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-shadow: 0 0 5px #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .beat:not(.playing) .touch-hint {
+            display: block;
+        }
+        /* Показываем только на телефонах */
         @media (max-width: 768px) {
             .beat { width: 90%; max-width: 300px; margin: 0 auto; }
             .beat h3 { font-size: 1.2rem; }
@@ -152,6 +178,7 @@
             @keyframes bounce { 0% { height: 8px; } 100% { height: 30px; } }
             .back-button { font-size: 1rem; padding: 8px 15px; }
             h1 { font-size: 1.5rem; }
+            .touch-hint { display: block; } /* Включаем на мобильных */
         }
         @media (max-width: 480px) {
             .beat { width: 100%; }
@@ -159,6 +186,7 @@
             .beat p { font-size: 0.9rem; }
             .equalizer { height: 25px; width: 60px; }
             .bar { width: 5px; margin: 0 1px; }
+            .touch-hint { font-size: 0.9rem; padding: 8px 12px; top: 25%; } /* Ещё выше для маленьких экранов */
         }
     </style>
     <script>
@@ -190,16 +218,14 @@
                 });
             }
 
-            // Отслеживание мыши для частиц и фона
+            // Отслеживание мыши для частиц
             document.addEventListener('mousemove', (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
-                updateBackgroundPosition(mouseX, mouseY);
             });
             document.addEventListener('mouseleave', () => {
                 mouseX = null;
                 mouseY = null;
-                document.body.style.backgroundPosition = "center center"; // Возвращаем фон в центр
             });
 
             // Отслеживание касаний
@@ -208,22 +234,11 @@
                 const touch = e.touches[0];
                 mouseX = touch.clientX;
                 mouseY = touch.clientY;
-                updateBackgroundPosition(mouseX, mouseY);
             });
             document.addEventListener('touchend', () => {
                 mouseX = null;
                 mouseY = null;
-                document.body.style.backgroundPosition = "center center"; // Возвращаем фон в центр
             });
-
-            // Плавное движение фона
-            function updateBackgroundPosition(x, y) {
-                if (x !== null && y !== null) {
-                    const moveX = (x / window.innerWidth - 0.5) * 20; // Уменьшил амплитуду до 20px
-                    const moveY = (y / window.innerHeight - 0.5) * 20;
-                    document.body.style.backgroundPosition = `${50 - moveX}% ${50 - moveY}%`;
-                }
-            }
 
             function drawParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -268,7 +283,7 @@
             document.addEventListener('click', initializeAudio);
             document.addEventListener('touchstart', initializeAudio);
 
-            // Предпрослушивание с исправлением
+            // Предпрослушивание
             const beats = document.querySelectorAll('.beat');
             beats.forEach(beat => {
                 const audio = beat.querySelector('audio');
@@ -282,6 +297,7 @@
                     if (audioInitialized) {
                         audio.pause();
                         audio.currentTime = 0;
+                        beat.classList.remove('playing');
                     }
                 });
                 beat.addEventListener('touchstart', (e) => {
@@ -289,12 +305,14 @@
                     if (audioInitialized) {
                         audio.currentTime = 0;
                         audio.play();
+                        beat.classList.add('playing');
                     }
                 });
                 beat.addEventListener('touchend', () => {
                     if (audioInitialized) {
                         audio.pause();
                         audio.currentTime = 0;
+                        beat.classList.remove('playing');
                     }
                 });
             });
@@ -317,6 +335,7 @@
                 <div class="bar"></div>
                 <div class="bar"></div>
             </div>
+            <div class="touch-hint">Зажми, чтобы прослушать</div>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
         <div class="beat">
@@ -331,6 +350,7 @@
                 <div class="bar"></div>
                 <div class="bar"></div>
             </div>
+            <div class="touch-hint">Зажми, чтобы прослушать</div>
             <button onclick="buyBeat('Beat 2')">Buy Now</button>
         </div>
     </div>
