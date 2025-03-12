@@ -13,6 +13,29 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+        }
+        .intro {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.9);
+            transition: opacity 1s ease-in-out;
+        }
+        .intro h1 {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #00ffcc;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
         .container {
             width: 80%;
@@ -20,6 +43,7 @@
             padding: 20px;
             background: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
+            display: none;
         }
         h1, h2 {
             color: #00ffcc;
@@ -34,7 +58,11 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="intro" id="intro">
+        <h1 id="name" onclick="enterSite()">NOFAL</h1>
+    </div>
+    
+    <div class="container" id="content">
         <h1>Мухамед Нофал</h1>
         <p><strong>Мухамед Нофал</strong> (род. 15 января 2003, Одесса, Украина) — украинский музыкант, известный своими мелодичными и атмосферными треками в жанре ambient.</p>
         
@@ -48,5 +76,15 @@
             <a href="https://www.twitch.tv/nofal_of" target="_blank">Twitch</a>
         </p>
     </div>
+
+    <script>
+        function enterSite() {
+            document.getElementById("intro").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("intro").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
