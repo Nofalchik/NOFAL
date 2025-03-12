@@ -50,11 +50,20 @@
             color: #00ffcc;
             cursor: pointer;
             opacity: 0;
-            animation: fadeIn 2s forwards;
+            animation: fadeIn 2s forwards, neonGlow 1.5s infinite alternate;
+            text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc;
         }
         .intro h1:hover {
             transform: scale(1.1);
             transition: transform 0.3s ease-in-out;
+        }
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            }
+            to {
+                text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+            }
         }
         .hint {
             position: absolute;
@@ -72,47 +81,6 @@
             0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
         }
-        .menu {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-        .menu a {
-            font-size: 1.5rem;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #ffffff;
-            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-        }
-        .menu a:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: scale(1.1);
-        }
-        @media (max-width: 768px) {
-            .menu {
-                flex-direction: column;
-                align-items: center;
-                top: 60%;
-            }
-        }
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
     </style>
 </head>
 <body>
@@ -124,76 +92,65 @@
         <h1 id="name" onclick="enterSite()">NOFAL</h1>
         <div class="hint">Нажмите, чтобы войти</div>
     </div>
-    
-    <div class="menu" id="menu">
-        <a href="bio.html">Биография</a>
-        <a href="socials.html">Соц сети</a>
-        <a href="shop.html">Магазин</a>
-    </div>
-
     <script>
-        document.addEventListener("mousemove", (e) => {
-            const background = document.getElementById("background");
-            let moveX = (e.clientX / window.innerWidth - 0.5) * 20;
-            let moveY = (e.clientY / window.innerHeight - 0.5) * 20;
-            background.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        });
+        const canvas = document.getElementById('snow');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        function enterSite() {
-            document.getElementById("intro").style.opacity = "0";
-            setTimeout(() => {
-                document.getElementById("intro").style.display = "none";
-                document.getElementById("menu").style.display = "flex";
-                setTimeout(() => {
-                    document.getElementById("menu").style.opacity = "1";
-                }, 100);
-            }, 1000);
-        }
+        let particlesArray = [];
+        const numberOfParticles = 100;
 
-        const snowCanvas = document.getElementById("snow");
-        const ctx = snowCanvas.getContext("2d");
-        snowCanvas.width = window.innerWidth;
-        snowCanvas.height = window.innerHeight;
-        let snowflakes = [];
-
-        function createSnowflakes() {
-            for (let i = 0; i < 100; i++) {
-                snowflakes.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    radius: Math.random() * 3 + 1,
-                    speedX: 0,
-                    speedY: Math.random() * 1.5 + 0.5
-                });
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 + 0.5;
+            }
+            update(mouseX, mouseY) {
+                if (mouseX && mouseY) {
+                    this.x += (mouseX - this.x) * 0.01;
+                    this.y += (mouseY - this.y) * 0.01;
+                } else {
+                    this.y += this.speedY;
+                }
+                if (this.y > canvas.height) {
+                    this.y = 0 - this.size;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        function moveSnowflakes(e) {
-            let moveX = (e.clientX / window.innerWidth - 0.5) * 1.5;
-            snowflakes.forEach(flake => {
-                flake.speedX = moveX;
-            });
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
         }
 
-        function updateSnow() {
-            ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-            snowflakes.forEach(flake => {
-                flake.x += flake.speedX;
-                flake.y += flake.speedY;
-                if (flake.y > window.innerHeight) flake.y = 0;
-                if (flake.x > window.innerWidth) flake.x = 0;
-                if (flake.x < 0) flake.x = window.innerWidth;
-                ctx.beginPath();
-                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-                ctx.fillStyle = "white";
-                ctx.fill();
+        function animate(mouseX, mouseY) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(particle => {
+                particle.update(mouseX, mouseY);
+                particle.draw();
             });
-            requestAnimationFrame(updateSnow);
+            requestAnimationFrame(() => animate(mouseX, mouseY));
         }
 
-        createSnowflakes();
-        updateSnow();
-        document.addEventListener("mousemove", moveSnowflakes);
+        init();
+        animate();
+
+        window.addEventListener('mousemove', (event) => {
+            animate(event.clientX, event.clientY);
+        });
     </script>
 </body>
 </html>
