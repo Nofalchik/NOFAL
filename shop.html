@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            transition: background-position 0.1s ease; /* Плавное движение фона */
+            transition: background-position 1s ease; /* Увеличил время для плавности */
         }
         .shop-container {
             display: flex;
@@ -166,7 +166,6 @@
             window.location.href = `https://t.me/nfchik?text=Хочу купить ${beatName}`;
         }
 
-        // Флаг для активации аудио
         let audioInitialized = false;
 
         window.onload = function() {
@@ -195,11 +194,12 @@
             document.addEventListener('mousemove', (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
-                updateBackgroundPosition(mouseX, mouseY); // Обновляем фон
+                updateBackgroundPosition(mouseX, mouseY);
             });
             document.addEventListener('mouseleave', () => {
                 mouseX = null;
                 mouseY = null;
+                document.body.style.backgroundPosition = "center center"; // Возвращаем фон в центр
             });
 
             // Отслеживание касаний
@@ -208,18 +208,19 @@
                 const touch = e.touches[0];
                 mouseX = touch.clientX;
                 mouseY = touch.clientY;
-                updateBackgroundPosition(mouseX, mouseY); // Обновляем фон
+                updateBackgroundPosition(mouseX, mouseY);
             });
             document.addEventListener('touchend', () => {
                 mouseX = null;
                 mouseY = null;
+                document.body.style.backgroundPosition = "center center"; // Возвращаем фон в центр
             });
 
-            // Функция для движения фона
+            // Плавное движение фона
             function updateBackgroundPosition(x, y) {
                 if (x !== null && y !== null) {
-                    const moveX = (x / window.innerWidth - 0.5) * 50; // Максимальное смещение 50px
-                    const moveY = (y / window.innerHeight - 0.5) * 50;
+                    const moveX = (x / window.innerWidth - 0.5) * 20; // Уменьшил амплитуду до 20px
+                    const moveY = (y / window.innerHeight - 0.5) * 20;
                     document.body.style.backgroundPosition = `${50 - moveX}% ${50 - moveY}%`;
                 }
             }
@@ -256,7 +257,7 @@
             }
             drawParticles();
 
-            // Активация аудио после первого взаимодействия
+            // Активация аудио
             function initializeAudio() {
                 if (!audioInitialized) {
                     audioInitialized = true;
@@ -267,17 +268,17 @@
             document.addEventListener('click', initializeAudio);
             document.addEventListener('touchstart', initializeAudio);
 
-            // Предпрослушивание
+            // Предпрослушивание с исправлением
             const beats = document.querySelectorAll('.beat');
             beats.forEach(beat => {
                 const audio = beat.querySelector('audio');
-                beat.addEventListener('mouseover', () => {
+                beat.addEventListener('mouseenter', () => {
                     if (audioInitialized) {
                         audio.currentTime = 0;
                         audio.play();
                     }
                 });
-                beat.addEventListener('mouseout', () => {
+                beat.addEventListener('mouseleave', () => {
                     if (audioInitialized) {
                         audio.pause();
                         audio.currentTime = 0;
