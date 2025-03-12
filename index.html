@@ -18,8 +18,8 @@
         }
         .background-container {
             position: fixed;
-            width: 200%;
-            height: 200vh;
+            width: 100%; /* Убираем 200%, чтобы исключить лишнее масштабирование */
+            height: 100vh; /* Фиксируем на высоте экрана */
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             transition: transform 0.1s linear;
@@ -400,13 +400,13 @@
     <div id="touch-hint" class="touch-hint">Зажми карточку, чтобы прослушать</div>
 
     <script>
-        // Движение фона
+        // Движение фона только до открытия магазина
         let lastMoveX = 0;
         let lastMoveY = 0;
         let isShopOpen = false;
 
         function updateBackground(e, isTouch = false) {
-            if (isShopOpen) return; // Блокируем движение фона, если магазин открыт
+            if (isShopOpen) return;
             const background = document.getElementById("background");
             let moveX, moveY;
             if (isTouch) {
@@ -466,7 +466,9 @@
             currentActiveLink = link;
             const shop = document.getElementById("shop");
             shop.classList.remove("active");
-            isShopOpen = false; // Сбрасываем флаг магазина
+            isShopOpen = false;
+            const background = document.getElementById("background");
+            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`; // Фиксируем фон перед переходом
             setTimeout(() => {
                 window.location.href = link.href;
             }, 400);
@@ -484,9 +486,12 @@
                 shop.classList.add("active");
             }, 10);
             document.body.style.overflow = "auto";
-            isShopOpen = true; // Устанавливаем флаг магазина
+            isShopOpen = true;
             const background = document.getElementById("background");
             background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`; // Фиксируем фон
+            // Удаляем обработчики движения фона
+            document.removeEventListener("mousemove", updateBackground);
+            document.removeEventListener("touchmove", updateBackground);
         }
 
         // Покупка бита
