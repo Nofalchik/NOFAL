@@ -87,17 +87,19 @@
             50% { opacity: 1; }
         }
         .menu {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
         }
         .menu a {
             font-size: 1.5rem;
@@ -156,13 +158,13 @@
         function enterSite() {
             document.getElementById("intro").style.opacity = "0";
             setTimeout(() => {
-                document.getElementById("intro").style.display = "none";
-                document.getElementById("menu").style.display = "flex";
-                setTimeout(() => {
-                    document.getElementById("menu").style.opacity = "1";
-                }, 100);
-            }, 1000);
-        }
+    const menu = document.getElementById("menu");
+    menu.style.display = "flex";
+    requestAnimationFrame(() => {
+        menu.style.opacity = "1";
+    });
+}, 1000);
+
 
         const snowCanvas = document.getElementById("snow");
         const ctx = snowCanvas.getContext("2d");
