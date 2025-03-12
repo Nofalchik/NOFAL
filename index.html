@@ -50,23 +50,20 @@
     color: #00ffcc;
     cursor: pointer;
     opacity: 0;
-    animation: fadeIn 2s forwards, neonGlow 3s infinite alternate;
+    animation: fadeIn 2s forwards, neonFlicker 3s infinite;
 }
 
-@keyframes neonGlow {
-    0% {
-        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 40px #00ffaa, 0 0 80px #00ffaa;
-        opacity: 1;
-    }
-    50% {
-        text-shadow: 0 0 3px #008877, 0 0 7px #008877, 0 0 15px #008877, 0 0 30px #006655, 0 0 60px #006655;
-        opacity: 0.9;
-    }
-    100% {
-        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 40px #00ffaa, 0 0 80px #00ffaa;
-        opacity: 1;
-    }
+@keyframes neonFlicker {
+    0% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa, 0 0 40px #00ffaa; }
+    25% { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffaa, 0 0 30px #00ffaa, 0 0 50px #00ffdd; }
+    30% { text-shadow: none; } /* Короткое мерцание */
+    35% { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffaa, 0 0 30px #00ffaa, 0 0 50px #00ffdd; }
+    50% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa, 0 0 40px #00ffaa; }
+    75% { text-shadow: 0 0 15px #00ffcc, 0 0 25px #00ffaa, 0 0 35px #00ffaa, 0 0 60px #00ffdd; }
+    90% { text-shadow: none; } /* Еще одно мерцание */
+    100% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa, 0 0 40px #00ffaa; }
 }
+
 
         .intro h1:hover {
             transform: scale(1.1);
