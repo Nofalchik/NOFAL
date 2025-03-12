@@ -181,7 +181,7 @@
             text-align: center;
             width: 280px;
             box-shadow: 0 0 10px #00ffcc;
-            transition: 0.3s;
+            transition: box-shadow 0.3s ease-in-out;
             box-sizing: border-box;
             position: relative;
             max-width: 90%;
@@ -200,7 +200,24 @@
             margin: 5px 0;
         }
         .beat audio {
-            display: none;
+            width: 100%;
+            margin: 10px 0;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            outline: none;
+        }
+        .beat audio::-webkit-media-controls-panel {
+            background: rgba(0, 0, 0, 0.5);
+            color: #00ffcc;
+        }
+        .beat audio::-webkit-media-controls-play-button,
+        .beat audio::-webkit-media-controls-volume-slider,
+        .beat audio::-webkit-media-controls-seek-back-button,
+        .beat audio::-webkit-media-controls-seek-forward-button,
+        .beat audio::-webkit-media-controls-fullscreen-button,
+        .beat audio::-webkit-media-controls-mute-button {
+            filter: brightness(1.5);
         }
         .beat button {
             background: #00ffcc;
@@ -210,53 +227,12 @@
             cursor: pointer;
             font-size: 0.9rem;
             border-radius: 5px;
-            transition: 0.3s;
+            transition: background 0.3s ease-in-out;
             width: 100%;
             box-sizing: border-box;
         }
         .beat button:hover {
             background: #00ffaa;
-        }
-        .equalizer {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 35px;
-            width: 80px;
-            margin: 8px auto;
-        }
-        .bar {
-            width: 6px;
-            height: 8px;
-            background: #00ffcc;
-            margin: 0 2px;
-            border-radius: 5px;
-            transition: height 0.1s;
-            box-shadow: 0 0 5px #00ffcc;
-        }
-        .beat:hover .bar:nth-child(1) {
-            height: 25px;
-            animation: bounce 0.5s infinite alternate, glow 0.5s infinite alternate;
-        }
-        .beat:hover .bar:nth-child(2) {
-            height: 18px;
-            animation: bounce 0.4s infinite alternate, glow 0.4s infinite alternate;
-        }
-        .beat:hover .bar:nth-child(3) {
-            height: 30px;
-            animation: bounce 0.6s infinite alternate, glow 0.6s infinite alternate;
-        }
-        .beat:hover .bar:nth-child(4) {
-            height: 20px;
-            animation: bounce 0.5s infinite alternate, glow 0.5s infinite alternate;
-        }
-        @keyframes bounce {
-            0% { height: 8px; }
-            100% { height: 30px; }
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px #00ffcc; }
-            100% { box-shadow: 0 0 15px #00ffaa; }
         }
         /* Стили для About Me */
         .about-container {
@@ -358,20 +334,9 @@
                 padding: 7px 10px;
                 font-size: 0.85rem;
             }
-            .equalizer {
-                height: 30px;
-                width: 70px;
+            .beat audio {
+                width: 100%;
             }
-            .bar {
-                width: 5px;
-                height: 7px;
-                margin: 0 2px;
-            }
-            .beat:hover .bar:nth-child(1) { height: 22px; }
-            .beat:hover .bar:nth-child(2) { height: 15px; }
-            .beat:hover .bar:nth-child(3) { height: 25px; }
-            .beat:hover .bar:nth-child(4) { height: 18px; }
-            @keyframes bounce { 0% { height: 7px; } 100% { height: 25px; } }
             .about-container h1 {
                 font-size: 2.5rem;
             }
@@ -421,14 +386,8 @@
                 padding: 6px 8px;
                 font-size: 0.8rem;
             }
-            .equalizer {
-                height: 25px;
-                width: 60px;
-            }
-            .bar {
-                width: 4px;
-                height: 6px;
-                margin: 0 1px;
+            .beat audio {
+                width: 100%;
             }
             .about-container h1 {
                 font-size: 2rem;
@@ -467,34 +426,30 @@
     </div>
     <!-- Контейнер для About Me -->
     <div class="content-container about-container" id="about">
-        <h1>Биография</h1>
+        <h1>About Me</h1>
         <p>I don't know, what if I'm a robot?</p>
     </div>
     <!-- Контейнер для Socials -->
     <div class="content-container socials-container" id="socials">
-        <h1>Социальные сети</h1>
+        <h1>Socials</h1>
         <a href="https://www.instagram.com/nofalchk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
         <a href="https://www.youtube.com/@nofalchk" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
         <a href="https://www.twitch.tv/nofal_of" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
+        <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <!-- Контейнер для Shop -->
     <div class="content-container shop-container" id="shop">
         <div class="beat">
             <h3>Beat 1</h3>
             <p>$5</p>
-            <audio>
+            <audio controls>
                 <source src="guitar.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
             </audio>
-            <div class="equalizer">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
             <button onclick="buyBeat('Beat 1')">Buy Now</button>
         </div>
     </div>
-    <div id="touch-hint" class="touch-hint">Зажми карточку, чтобы прослушать</div>
+    <div id="touch-hint" class="touch-hint">Use the player to listen</div>
 
     <script>
         // Движение фона только до открытия секций
@@ -584,7 +539,7 @@
 
         // Покупка бита
         function buyBeat(beatName) {
-            window.location.href = `https://t.me/nfchik?text=Хочу купить ${beatName}`;
+            window.location.href = `https://t.me/nfchik?text=I want to buy ${beatName}`;
         }
 
         // Анимация снежинок
@@ -659,47 +614,10 @@
             }
 
             const touchHint = document.getElementById('touch-hint');
-            let isAnyBeatPlaying = false;
-
-            const beats = document.querySelectorAll('.beat');
-            beats.forEach(beat => {
-                const audio = beat.querySelector('audio');
-                beat.addEventListener('mouseenter', () => {
-                    if (audioInitialized && document.getElementById("shop").classList.contains("active")) {
-                        audio.currentTime = 0;
-                        audio.play();
-                    }
-                });
-                beat.addEventListener('mouseleave', () => {
-                    if (audioInitialized) {
-                        audio.pause();
-                        audio.currentTime = 0;
-                    }
-                });
-                beat.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    if (audioInitialized && document.getElementById("shop").classList.contains("active")) {
-                        audio.currentTime = 0;
-                        audio.play();
-                        isAnyBeatPlaying = true;
-                        touchHint.classList.remove('visible');
-                    }
-                });
-                beat.addEventListener('touchend', () => {
-                    if (audioInitialized) {
-                        audio.pause();
-                        audio.currentTime = 0;
-                        isAnyBeatPlaying = false;
-                        if (document.getElementById("shop").classList.contains("active") && window.innerWidth <= 768) {
-                            touchHint.classList.add('visible');
-                        }
-                    }
-                });
-            });
 
             // Показ подсказки только в разделе Shop на мобильных
             document.getElementById("shop").addEventListener("transitionend", () => {
-                if (document.getElementById("shop").classList.contains("active") && window.innerWidth <= 768 && !isAnyBeatPlaying) {
+                if (document.getElementById("shop").classList.contains("active") && window.innerWidth <= 768) {
                     touchHint.classList.add("visible");
                 } else {
                     touchHint.classList.remove("visible");
