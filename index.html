@@ -153,12 +153,15 @@
             opacity: 1;
             pointer-events: auto;
         }
-        /* Стили для Beats с новым фоном */
+        /* Стили для Beats с исправленным фоном */
         .beats-container.active {
-            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%); /* Градиентный фон в стиле xAI */
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+            width: 100%; /* Убедимся, что занимает всю ширину */
+            min-height: 100vh; /* Убедимся, что занимает всю высоту */
+            z-index: -1; /* Поднимаем над .background-container */
         }
         .beats-container::before {
-            content: none; /* Убираем размытие, так как теперь сплошной фон */
+            content: none; /* Убираем размытие */
         }
         .beats-container .particles {
             position: absolute;
