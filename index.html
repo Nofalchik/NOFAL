@@ -299,21 +299,14 @@
             z-index: 0;
         }
         .socials-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(2px);
-            z-index: 1;
+            content: none;
         }
         .socials-container .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 2;
+            z-index: 1;
         }
         .socials-container .particle {
             position: absolute;
@@ -341,7 +334,7 @@
             color: #66ff66;
             margin: 0 0 20px 0;
             position: relative;
-            z-index: 3;
+            z-index: 2;
         }
         .socials-container a {
             display: flex;
@@ -353,7 +346,7 @@
             margin: 10px 0;
             transition: color 0.3s ease-in-out;
             position: relative;
-            z-index: 3;
+            z-index: 2;
         }
         .socials-container a i {
             margin-right: 10px;
@@ -375,21 +368,14 @@
             z-index: 0;
         }
         .about-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(2px);
-            z-index: 1;
+            content: none;
         }
         .about-container .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 2;
+            z-index: 1;
         }
         .about-container .particle {
             position: absolute;
@@ -417,7 +403,7 @@
             color: #00ffcc;
             margin: 0 0 20px 0;
             position: relative;
-            z-index: 3;
+            z-index: 2;
         }
         .about-container p {
             font-size: 1.5rem;
@@ -425,7 +411,7 @@
             margin: 0 auto;
             line-height: 1.6;
             position: relative;
-            z-index: 3;
+            z-index: 2;
         }
 
         .touch-hint {
