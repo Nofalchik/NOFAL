@@ -144,7 +144,7 @@
             padding: 80px 20px 20px;
             z-index: 5;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out; /* Ускоряем переход */
+            transition: opacity 0.8s ease-in-out;
             pointer-events: none;
             overflow-y: auto;
             background: none;
@@ -166,6 +166,26 @@
         .beats-container::before {
             content: none;
         }
+        /* Эффект свечения солнца */
+        .beats-container .sun-glow {
+            position: absolute;
+            left: -150px; /* Половина круга уходит за край */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at center, #ffd700 0%, rgba(255, 215, 0, 0.3) 50%, rgba(255, 215, 0, 0) 70%);
+            border-radius: 50%;
+            clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%); /* Обрезаем левую половину */
+            box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4);
+            z-index: 1;
+            animation: sunPulse 5s infinite ease-in-out;
+        }
+        @keyframes sunPulse {
+            0% { box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4); }
+            50% { box-shadow: 0 0 120px rgba(255, 215, 0, 1), 0 0 250px rgba(255, 215, 0, 0.5); }
+            100% { box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4); }
+        }
         .beats-container .particles {
             position: absolute;
             width: 100%;
@@ -175,19 +195,36 @@
         }
         .beats-container .particle {
             position: absolute;
-            width: 1px; /* Уменьшаем размер */
-            height: 1px; /* Уменьшаем размер */
+            width: 1px;
+            height: 1px;
             background: linear-gradient(45deg, #ffd700, #ffffff);
             border-radius: 50%;
-            animation: floatDust 10s infinite linear;
-            opacity: 0.6; /* Слегка уменьшаем яркость */
+            animation: radiateFromSun 10s infinite linear;
+            opacity: 0.6;
+            left: 0; /* Начинаются у левого края */
+            top: 50%; /* Центрируем по вертикали */
         }
-        @keyframes floatDust {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-            25% { transform: translate(-5vw, -10vh) scale(1.2); opacity: 0.6; }
-            50% { transform: translate(5vw, -20vh) scale(1.5); opacity: 0.4; }
-            75% { transform: translate(-3vw, -15vh) scale(1.3); opacity: 0.5; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+        @keyframes radiateFromSun {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+            25% {
+                transform: translate(20vw, -5vh) scale(1.2);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate(40vw, 10vh) scale(1.5);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translate(60vw, -5vh) scale(1.3);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translate(80vw, 0) scale(1);
+                opacity: 0;
+            }
         }
         .beats-container {
             font-family: 'Orbitron', sans-serif;
@@ -385,6 +422,11 @@
             .beat h3 { font-size: 1.1rem; }
             .custom-player { height: 5px; }
             .play-indicator { width: 12px; height: 12px; top: -3px; }
+            .beats-container .sun-glow {
+                width: 200px;
+                height: 200px;
+                left: -100px;
+            }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -394,6 +436,11 @@
             .beat h3 { font-size: 1rem; }
             .custom-player { height: 4px; }
             .play-indicator { width: 10px; height: 10px; top: -3px; }
+            .beats-container .sun-glow {
+                width: 150px;
+                height: 150px;
+                left: -75px;
+            }
         }
     </style>
 </head>
@@ -424,6 +471,7 @@
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <div class="content-container beats-container" id="beats">
+        <div class="sun-glow"></div> <!-- Добавляем эффект солнца -->
         <div class="particles"></div>
         <div class="beat">
             <h3>Forest</h3>
@@ -570,9 +618,9 @@
             for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                particle.style.animationDuration = `${10 + Math.random() * 20}s`;
+                // Случайное смещение по вертикали относительно центра солнца
+                particle.style.top = `calc(50% + ${Math.random() * 200 - 100}px)`;
+                particle.style.animationDuration = `${5 + Math.random() * 10}s`;
                 particle.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(particle);
             }
