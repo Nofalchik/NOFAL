@@ -319,15 +319,18 @@
         }
         .socials-container {
             font-family: 'Montserrat', sans-serif;
+            width: 100%;
+            padding: 120px 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .socials-container .inner-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
             max-width: 800px;
             margin: 0 auto;
-            padding: 120px 20px 20px;
-            position: relative;
-            overflow: hidden;
         }
         .socials-container h1 {
             font-size: 3rem;
@@ -388,15 +391,18 @@
         }
         .about-container {
             font-family: 'Montserrat', sans-serif;
+            width: 100%;
+            padding: 120px 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .about-container .inner-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
             max-width: 800px;
             margin: 0 auto;
-            padding: 120px 20px 20px;
-            position: relative;
-            overflow: hidden;
         }
         .about-container h1 {
             font-size: 3rem;
@@ -407,8 +413,6 @@
         }
         .about-container p {
             font-size: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
             line-height: 1.6;
             position: relative;
             z-index: 2;
@@ -484,21 +488,26 @@
     </div>
     <div class="content-container about-container" id="about">
         <div class="particles"></div>
-        <h1>About Me</h1>
-        <p>I don't know, what if I'm a robot?</p>
+        <div class="inner-content">
+            <h1>About Me</h1>
+            <p>I don't know, what if I'm a robot?</p>
+        </div>
     </div>
     <div class="content-container socials-container" id="socials">
         <div class="particles"></div>
-        <h1>Socials</h1>
-        <a href="https://www.instagram.com/nofalchk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-        <a href="https://www.youtube.com/@nofalchk" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-        <a href="https://www.twitch.tv/nofal_of" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
-        <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
+        <div class="inner-content">
+            <h1>Socials</h1>
+            <a href="https://www.instagram.com/nofalchk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="https://www.youtube.com/@nofalchk" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+            <a href="https://www.twitch.tv/nofal_of" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
+            <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
+        </div>
     </div>
     <div class="content-container beats-container" id="beats">
         <div class="sun-glow"></div>
         <div class="particles"></div>
         <div class="beat">
+            <h1>Beats</h1>
             <h3>Forest</h3>
             <audio preload="metadata">
                 <source src="forest.mp3" type="audio/mpeg">
@@ -580,8 +589,8 @@
             const background = document.getElementById("background");
             const blurredBg = document.getElementById("blurred-bg");
             const snowCanvas = document.getElementById("snow");
-            background.style.display = "none"; // Скрываем фон главного меню
-            blurredBg.style.display = "none";  // Скрываем размытие
+            background.style.display = "none";
+            blurredBg.style.display = "none";
             snowCanvas.style.display = "none";
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
