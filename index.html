@@ -166,34 +166,23 @@
         .beats-container::before {
             content: none;
         }
-        /* Эффект солнца с изображением */
-        .beats-container .sun-image {
+        /* Яркий свет вместо солнца */
+        .beats-container .sun-glow {
             position: absolute;
             right: -150px;
             top: 50%;
             transform: translateY(-50%);
             width: 300px;
-            height: auto;
+            height: 500px;
+            background: radial-gradient(
+                circle at center,
+                rgba(173, 216, 230, 1) 0%, /* Светло-синий яркий центр */
+                rgba(135, 206, 235, 0.6) 30%,
+                rgba(0, 191, 255, 0.3) 60%,
+                rgba(0, 191, 255, 0) 80% /* Затихает к середине */
+            );
+            border-radius: 50%;
             z-index: 1;
-            filter: drop-shadow(0 0 50px rgba(0, 191, 255, 0.8)) drop-shadow(0 0 100px rgba(0, 191, 255, 0.5)); /* Синеватое свечение */
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.6), 0 0 40px rgba(0, 191, 255, 0.3); /* Дополнительное свечение */
-        }
-        .beats-container .sun-image::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -1000px;
-            width: 1000px;
-            height: 100%;
-            background: linear-gradient(
-                to left,
-                rgba(0, 191, 255, 0) 0%,
-                rgba(0, 191, 255, 0.1) 50%,
-                rgba(0, 191, 255, 0.3) 80%,
-                rgba(0, 191, 255, 0.5) 100%
-            ); /* Луч света */
-            z-index: 0;
-            opacity: 0.6;
         }
         .beats-container .particles {
             position: absolute;
@@ -208,7 +197,7 @@
             height: 1px;
             background: linear-gradient(45deg, #87CEEB, #ADD8E6); /* Мягкий синий цвет */
             border-radius: 50%;
-            animation: radiateFromSun 40s infinite linear; /* Ещё медленнее */
+            animation: radiateFromSun 40s infinite linear;
             opacity: 0.6;
             right: 0;
             top: 50%;
@@ -255,7 +244,7 @@
             position: relative;
             z-index: 2;
             width: 200px;
-            box-shadow: -5px 0 15px rgba(0, 191, 255, 0.3), 5px 0 15px rgba(0, 0, 0, 0.2); /* Свет справа, тень слева */
+            box-shadow: -5px 0 15px rgba(0, 191, 255, 0.3), 5px 0 15px rgba(0, 0, 0, 0.2);
         }
         .beat:hover {
             transform: scale(1.05);
@@ -432,8 +421,9 @@
             .beat h3 { font-size: 1.1rem; }
             .custom-player { height: 5px; }
             .play-indicator { width: 12px; height: 12px; top: -3px; }
-            .beats-container .sun-image {
+            .beats-container .sun-glow {
                 width: 200px;
+                height: 350px;
                 right: -100px;
             }
         }
@@ -445,8 +435,9 @@
             .beat h3 { font-size: 1rem; }
             .custom-player { height: 4px; }
             .play-indicator { width: 10px; height: 10px; top: -3px; }
-            .beats-container .sun-image {
+            .beats-container .sun-glow {
                 width: 150px;
+                height: 250px;
                 right: -75px;
             }
         }
@@ -479,7 +470,7 @@
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <div class="content-container beats-container" id="beats">
-        <img src="sun.png" alt="Sun" class="sun-image">
+        <div class="sun-glow"></div>
         <div class="particles"></div>
         <div class="beat">
             <h3>Forest</h3>
@@ -626,8 +617,8 @@
             for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.top = `calc(50% + ${Math.random() * 500 - 250}px)`; /* Распределяем по высоте солнца */
-                particle.style.animationDuration = `${20 + Math.random() * 20}s`; /* Увеличиваем диапазон длительности */
+                particle.style.top = `calc(50% + ${Math.random() * 500 - 250}px)`;
+                particle.style.animationDuration = `${20 + Math.random() * 20}s`;
                 particle.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(particle);
             }
