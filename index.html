@@ -161,12 +161,24 @@
             font-family: 'Orbitron', sans-serif;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 50px; /* Больше пространства */
+            gap: 50px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 120px 20px 20px; /* Опускаем ниже */
-            background: linear-gradient(135deg, rgba(0, 255, 204, 0.1), rgba(0, 204, 255, 0.1));
+            padding: 120px 20px 20px;
+            background: url('background1.jpg') no-repeat center center / cover;
             position: relative;
+            overflow: hidden;
+        }
+        .beats-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Затемнение для читаемости */
+            backdrop-filter: blur(3px); /* Лёгкое размытие */
+            z-index: 0;
         }
         .beat {
             background: rgba(0, 0, 0, 0.5);
@@ -176,6 +188,8 @@
             box-sizing: border-box;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            position: relative;
+            z-index: 1;
         }
         .beat:hover {
             transform: scale(1.05);
@@ -185,6 +199,8 @@
             margin: 0 0 10px 0;
             font-size: 1.2rem;
             font-weight: 400;
+            color: #00ffcc;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
         }
         .beat audio {
             display: none;
@@ -217,42 +233,63 @@
             transform: translateX(-50%);
             transition: left 0.1s linear;
         }
-        /* Уникальные цвета */
-        .beat:nth-child(1) h3 { color: #00ffcc; text-shadow: 0 0 5px #00ffcc; }
         .beat:nth-child(1) .play-indicator { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
-
-        .beat:nth-child(2) h3 { color: #00ccff; text-shadow: 0 0 5px #00ccff; }
         .beat:nth-child(2) .play-indicator { background: #00ccff; box-shadow: 0 0 10px #00ccff; }
-
-        .beat:nth-child(3) h3 { color: #00ff99; text-shadow: 0 0 5px #00ff99; }
         .beat:nth-child(3) .play-indicator { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
 
-        /* Декоративные линии */
-        .beats-container .neon-lines {
+        /* Стили для Socials */
+        .socials-container {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 20px 20px;
+            background: url('background2.jpg') no-repeat center center / cover;
+            position: relative;
+            overflow: hidden;
+        }
+        .socials-container::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            background: rgba(0, 0, 0, 0.5); /* Затемнение для читаемости */
+            backdrop-filter: blur(3px); /* Лёгкое размытие */
             z-index: 0;
-            opacity: 0.3;
         }
-        .beats-container .neon-lines::before, 
-        .beats-container .neon-lines::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #00ffcc, transparent);
-            animation: moveLine 10s infinite linear;
+        .socials-container h1 {
+            font-size: 3rem;
+            color: #66ff66;
+            margin: 0 0 20px 0;
+            position: relative;
+            z-index: 1;
         }
-        .beats-container .neon-lines::before { top: 15%; }
-        .beats-container .neon-lines::after { bottom: 15%; }
-        @keyframes moveLine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        .socials-container a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: color 0.3s ease-in-out;
+            position: relative;
+            z-index: 1;
         }
+        .socials-container a i {
+            margin-right: 10px;
+            font-size: 24px;
+            color: #ffffff;
+            transition: color 0.3s ease-in-out;
+        }
+        .socials-container a:hover { color: #66ff66; }
+        .socials-container a:hover i { color: #66ff66; }
+
         /* Остальные стили */
         .about-container {
             font-family: 'Montserrat', sans-serif;
@@ -268,32 +305,6 @@
             margin: 0 auto;
             line-height: 1.6;
         }
-        .socials-container {
-            font-family: 'Montserrat', sans-serif;
-        }
-        .socials-container h1 {
-            font-size: 3rem;
-            color: #66ff66;
-            margin: 0 0 20px 0;
-        }
-        .socials-container a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #ffffff;
-            text-decoration: none;
-            margin: 10px 0;
-            transition: color 0.3s ease-in-out;
-        }
-        .socials-container a i {
-            margin-right: 10px;
-            font-size: 24px;
-            color: #ffffff;
-            transition: color 0.3s ease-in-out;
-        }
-        .socials-container a:hover { color: #66ff66; }
-        .socials-container a:hover i { color: #66ff66; }
         .touch-hint {
             display: none;
             position: fixed;
@@ -323,13 +334,14 @@
             100% { background-position: 0% 50%; }
         }
         @media (max-width: 768px) {
-            .beats-container { 
-                grid-template-columns: 1fr; 
+            .beats-container, .socials-container { 
                 padding: 100px 20px 20px; 
             }
             .beat h3 { font-size: 1.1rem; }
             .custom-player { height: 5px; }
             .play-indicator { width: 12px; height: 12px; top: -3px; }
+            .socials-container h1 { font-size: 2.5rem; }
+            .socials-container a { font-size: 1.2rem; }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -339,6 +351,8 @@
             .beat h3 { font-size: 1rem; }
             .custom-player { height: 4px; }
             .play-indicator { width: 10px; height: 10px; top: -3px; }
+            .socials-container h1 { font-size: 2rem; }
+            .socials-container a { font-size: 1rem; }
         }
     </style>
 </head>
@@ -367,7 +381,6 @@
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <div class="content-container beats-container" id="beats">
-        <div class="neon-lines"></div>
         <div class="beat">
             <h3>Forest</h3>
             <audio preload="metadata">
