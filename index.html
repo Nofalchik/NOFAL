@@ -176,27 +176,27 @@
             height: 500px;
             background: radial-gradient(
                 circle at 50% 50%,
-                rgba(0, 255, 204, 0.1) 0%,
+                rgba(0, 191, 255, 0.1) 0%,
                 transparent 10%
             );
             border-radius: 50%;
             z-index: 1;
-            filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd);
-            box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2);
-            animation: sunGlowPulse 5s infinite ease-in-out;
+            filter: brightness(4) drop-shadow(0 0 30px #00bfff) drop-shadow(0 0 50px #00aaff);
+            box-shadow: 0 0 70px rgba(0, 191, 255, 0.3), 0 0 120px rgba(0, 191, 255, 0.2);
+            animation: sunGlowPulse 8s infinite ease-in-out; /* Увеличено до 8s */
         }
         @keyframes sunGlowPulse {
             0% { 
-                filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd);
-                box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2);
+                filter: brightness(4) drop-shadow(0 0 30px #00bfff) drop-shadow(0 0 50px #00aaff);
+                box-shadow: 0 0 70px rgba(0, 191, 255, 0.3), 0 0 120px rgba(0, 191, 255, 0.2);
             }
             50% { 
-                filter: brightness(5) drop-shadow(0 0 40px #00ccff) drop-shadow(0 0 60px #00ccdd) drop-shadow(0 0 80px #00aaff);
-                box-shadow: 0 0 90px rgba(0, 204, 255, 0.4), 0 0 150px rgba(0, 204, 255, 0.3);
+                filter: brightness(6) drop-shadow(0 0 60px #00bfff) drop-shadow(0 0 80px #00aaff); /* Увеличена яркость и тени */
+                box-shadow: 0 0 120px rgba(0, 191, 255, 0.5), 0 0 180px rgba(0, 191, 255, 0.4); /* Увеличены тени */
             }
             100% { 
-                filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd);
-                box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2);
+                filter: brightness(4) drop-shadow(0 0 30px #00bfff) drop-shadow(0 0 50px #00aaff);
+                box-shadow: 0 0 70px rgba(0, 191, 255, 0.3), 0 0 120px rgba(0, 191, 255, 0.2);
             }
         }
         .beats-container .particles {
@@ -208,11 +208,11 @@
         }
         .beats-container .particle {
             position: absolute;
-            width: 1px;
-            height: 1px;
-            background: linear-gradient(45deg, #87CEEB, #ADD8E6);
+            width: 1.5px; /* Уменьшен размер до 1.5px */
+            height: 1.5px; /* Уменьшен размер до 1.5px */
+            background: linear-gradient(45deg, #ffff99, #ffcc00);
             border-radius: 50%;
-            animation: floatRandomly 60s infinite linear;
+            animation: floatRandomly 120s infinite linear;
             opacity: 0.6;
         }
         @keyframes floatRandomly {
@@ -240,8 +240,9 @@
         .beats-container {
             font-family: 'Orbitron', sans-serif;
             display: flex;
-            justify-content: center;
-            gap: 50px;
+            flex-direction: column; /* Изменено на вертикальное расположение */
+            align-items: center; /* Центрирование по горизонтали */
+            gap: 80px; /* Увеличено расстояние между треками */
             padding: 120px 20px 20px;
             position: relative;
             overflow: hidden;
@@ -313,7 +314,7 @@
             transition: left 0.1s linear;
         }
         .beat.playing .play-indicator {
-            animation: pulse 1.5s infinite ease-in-out;
+            animation: pulse 3s infinite ease-in-out;
         }
         @keyframes pulse {
             0% { transform: translateX(-50%) scale(1); }
@@ -743,7 +744,10 @@
                 particle.style.setProperty('--dir-x', Math.random() * 2 - 1);
                 particle.style.setProperty('--dir-y', Math.random() * 2 - 1);
                 if (container.parentElement.classList.contains('beats-container')) {
-                    particle.style.background = 'linear-gradient(45deg, #87CEEB, #ADD8E6)';
+                    particle.style.background = 'linear-gradient(45deg, #ffff99, #ffcc00)';
+                    particle.style.width = '1.5px'; /* Уменьшен размер */
+                    particle.style.height = '1.5px'; /* Уменьшен размер */
+                    particle.style.animationDuration = `${120 + Math.random() * 60}s`;
                 } else if (container.parentElement.classList.contains('socials-container')) {
                     particle.style.background = 'linear-gradient(45deg, #66ff66, #90ee90)';
                 } else if (container.parentElement.classList.contains('about-container')) {
@@ -761,7 +765,7 @@
                 particle.style.position = 'absolute';
                 particle.style.width = '2px';
                 particle.style.height = '2px';
-                particle.style.background = 'linear-gradient(45deg, #00ffcc, #00ccff)';
+                particle.style.background = 'linear-gradient(45deg, #ffff99, #ffcc00)';
                 particle.style.borderRadius = '50%';
                 particle.style.left = `${rect.width / 2}px`;
                 particle.style.top = `${rect.height / 2}px`;
