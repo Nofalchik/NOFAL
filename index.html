@@ -167,26 +167,24 @@
         .beats-container::before {
             content: none;
         }
-        /* Направленное свечение к центру */
+        /* Очень размытое свечение */
         .beats-container .sun-glow {
             position: absolute;
             right: -150px;
             top: 50%;
             transform: translateY(-50%);
-            width: 300px; /* Уменьшил радиус */
-            height: 500px; /* Уменьшил высоту */
+            width: 300px;
+            height: 500px;
             background: radial-gradient(
-                circle at 50% 50%, /* Центр ближе к середине */
-                rgba(0, 255, 204, 0.9) 0%, /* Убрал резкий центр */
-                rgba(0, 255, 204, 0.7) 10%,
-                rgba(0, 255, 204, 0.4) 20%,
-                rgba(0, 255, 204, 0.2) 30%,
-                transparent 40% /* Плавное затухание */
+                circle at 50% 50%,
+                rgba(0, 255, 204, 0.3) 0%, /* Очень слабая яркость в центре */
+                rgba(0, 255, 204, 0.1) 10%,
+                transparent 20% /* Быстрое затухание */
             );
             border-radius: 50%;
             z-index: 1;
             filter: brightness(3) drop-shadow(0 0 20px #00ffcc) drop-shadow(0 0 40px #00ffaa) drop-shadow(0 0 60px #00ffdd);
-            box-shadow: 0 0 50px #00ffcc, 0 0 100px #00ffaa;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2), 0 0 100px rgba(0, 255, 204, 0.1);
         }
         .beats-container .particles {
             position: absolute;
@@ -201,28 +199,28 @@
             height: 1px;
             background: linear-gradient(45deg, #87CEEB, #ADD8E6);
             border-radius: 50%;
-            animation: floatAcrossScreen 60s infinite linear; /* Медленное движение по экрану */
+            animation: floatRandomly 60s infinite linear; /* Случайное движение */
             opacity: 0.6;
         }
-        @keyframes floatAcrossScreen {
+        @keyframes floatRandomly {
             0% {
                 transform: translate(0, 0) scale(1);
                 opacity: 0.6;
             }
             25% {
-                transform: translate(25vw, -15vh) scale(1.2);
+                transform: translate(calc(50vw * (var(--dir-x))), calc(50vh * (var(--dir-y)))) scale(1.2);
                 opacity: 0.6;
             }
             50% {
-                transform: translate(50vw, 15vh) scale(1.5);
+                transform: translate(calc(100vw * (var(--dir-x))), calc(100vh * (var(--dir-y)))) scale(1.5);
                 opacity: 0.6;
             }
             75% {
-                transform: translate(75vw, -15vh) scale(1.3);
+                transform: translate(calc(50vw * (var(--dir-x))), calc(50vh * (var(--dir-y)))) scale(1.3);
                 opacity: 0.6;
             }
             100% {
-                transform: translate(100vw, 0) scale(1);
+                transform: translate(0, 0) scale(1);
                 opacity: 0.6;
             }
         }
@@ -428,9 +426,6 @@
                 height: 400px;
                 right: -100px;
             }
-            .beats-container .particle {
-                animation: floatAcrossScreen 60s infinite linear;
-            }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -444,9 +439,6 @@
                 width: 200px;
                 height: 300px;
                 right: -75px;
-            }
-            .beats-container .particle {
-                animation: floatAcrossScreen 60s infinite linear;
             }
         }
     </style>
@@ -621,13 +613,15 @@
         }
 
         function createParticles(container) {
-            for (let i = 0; i < 200; i++) { /* Оставим 200 частиц */
+            for (let i = 0; i < 100; i++) { /* Уменьшил до 100 частиц */
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.left = `${Math.random() * 100}vw`; /* Распределяем по всему экрану */
-                particle.style.top = `${Math.random() * 100}vh`; /* Распределяем по всему экрану */
-                particle.style.animationDuration = `${60 + Math.random() * 60}s`; /* 60-120 секунд */
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.animationDuration = `${60 + Math.random() * 60}s`;
                 particle.style.animationDelay = `0s`;
+                particle.style.setProperty('--dir-x', Math.random() * 2 - 1); /* Случайное направление по X */
+                particle.style.setProperty('--dir-y', Math.random() * 2 - 1); /* Случайное направление по Y */
                 container.appendChild(particle);
             }
         }
