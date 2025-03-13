@@ -154,7 +154,7 @@
             opacity: 1;
             pointer-events: auto;
         }
-        /* Updated Beats Section */
+        /* Стили для Beats */
         .beats-container.active {
             background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
             width: 100%;
@@ -176,27 +176,27 @@
             height: 500px;
             background: radial-gradient(
                 circle at 50% 50%,
-                rgba(0, 191, 255, 0.1) 0%,
+                rgba(0, 255, 204, 0.1) 0%,
                 transparent 10%
             );
             border-radius: 50%;
             z-index: 1;
-            filter: brightness(4) drop-shadow(0 0 30px #00bfff) drop-shadow(0 0 50px #00aaff);
-            box-shadow: 0 0 70px rgba(0, 191, 255, 0.3), 0 0 120px rgba(0, 191, 255, 0.2);
-            animation: sunGlowPulse 8s infinite ease-in-out;
+            filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd);
+            box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2);
+            animation: sunGlowPulse 5s infinite ease-in-out;
         }
         @keyframes sunGlowPulse {
             0% { 
-                filter: brightness(4) drop-shadow(0 0 30px #00bfff) drop-shadow(0 0 50px #00aaff);
-                box-shadow: 0 0 70px rgba(0, 191, 255, 0.3), 0 0 120px rgba(0, 191, 255, 0.2);
+                filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd);
+                box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2);
             }
             50% { 
-                filter: brightness(6) drop-shadow(0 0 60px #00bfff) drop-shadow(0 0 80px #00aaff);
-                box-shadow: 0 0 120px rgba(0, 191, 255, 0.5), 0 0 180px rgba(0, 191, 255, 0.4);
+                filter: brightness(5) drop-shadow(0 0 40px #00ccff) drop-shadow(0 0 60px #00ccdd) drop-shadow(0 0 80px #00aaff);
+                box-shadow: 0 0 90px rgba(0, 204, 255, 0.4), 0 0 150px rgba(0, 204, 255, 0.3);
             }
             100% { 
-                filter: brightness(4) drop-shadow(0 0 30px #00bfff) drop-shadow(0 0 50px #00aaff);
-                box-shadow: 0 0 70px rgba(0, 191, 255, 0.3), 0 0 120px rgba(0, 191, 255, 0.2);
+                filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd);
+                box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2);
             }
         }
         .beats-container .particles {
@@ -208,9 +208,9 @@
         }
         .beats-container .particle {
             position: absolute;
-            width: 1px; /* Matched size with other sections */
-            height: 1px; /* Matched size with other sections */
-            background: linear-gradient(45deg, #66b3ff, #99ccff);
+            width: 1px;
+            height: 1px;
+            background: linear-gradient(45deg, #87CEEB, #ADD8E6);
             border-radius: 50%;
             animation: floatRandomly 60s infinite linear;
             opacity: 0.6;
@@ -239,14 +239,12 @@
         }
         .beats-container {
             font-family: 'Orbitron', sans-serif;
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            padding: 120px 20px 20px;
-            overflow: hidden;
             display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 50px;
+            padding: 120px 20px 20px;
+            position: relative;
+            overflow: hidden;
         }
         .beat {
             background: rgba(0, 0, 0, 0.5);
@@ -256,46 +254,15 @@
             box-sizing: border-box;
             transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
             cursor: pointer;
-            position: absolute;
+            position: relative;
             z-index: 2;
             width: 200px;
             box-shadow: -5px 0 15px rgba(0, 191, 255, 0.3), 5px 0 15px rgba(0, 0, 0, 0.2);
-            animation: orbit 20s linear infinite; /* Orbit animation */
-        }
-        .beat:nth-child(1) {
-            --angle: 0deg;
-            --radius: 200px;
-        }
-        .beat:nth-child(2) {
-            --angle: 120deg;
-            --radius: 200px;
-            animation-delay: -6.67s; /* 20s / 3 tracks */
-        }
-        .beat:nth-child(3) {
-            --angle: 240deg;
-            --radius: 200px;
-            animation-delay: -13.33s; /* 20s * 2 / 3 tracks */
-        }
-        @keyframes orbit {
-            0% {
-                transform: translate(
-                    calc(var(--radius) * cos(var(--angle))),
-                    calc(var(--radius) * sin(var(--angle)))
-                );
-            }
-            100% {
-                transform: translate(
-                    calc(var(--radius) * cos(calc(var(--angle) + 360deg))),
-                    calc(var(--radius) * sin(calc(var(--angle) + 360deg)))
-                );
-            }
         }
         .beat:hover {
-            transform: scale(1.1); /* Slight scale on hover */
+            transform: scale(1.05);
             box-shadow: -5px 0 20px rgba(0, 191, 255, 0.5), 5px 0 20px rgba(0, 0, 0, 0.3);
             background: linear-gradient(45deg, rgba(0, 255, 204, 0.2), rgba(0, 204, 255, 0.2));
-            z-index: 3;
-            animation-play-state: paused; /* Pause orbit on hover */
         }
         .beat h3 {
             margin: 0 0 10px 0;
@@ -346,7 +313,7 @@
             transition: left 0.1s linear;
         }
         .beat.playing .play-indicator {
-            animation: pulse 3s infinite ease-in-out;
+            animation: pulse 1.5s infinite ease-in-out;
         }
         @keyframes pulse {
             0% { transform: translateX(-50%) scale(1); }
@@ -386,7 +353,7 @@
                 opacity: 0;
             }
         }
-        /* Socials Section (unchanged) */
+        /* Стили для Socials */
         .socials-container.active {
             background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
             width: 100%;
@@ -457,7 +424,7 @@
         }
         .socials-container a:hover { color: #66ff66; }
         .socials-container a:hover i { color: #66ff66; }
-        /* About Section (unchanged) */
+        /* Стили для About */
         .about-container.active {
             background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
             width: 100%;
@@ -552,16 +519,6 @@
                 height: 400px;
                 right: -100px;
             }
-            .beats-container .particle {
-                width: 1px;
-                height: 1px;
-            }
-            .beat {
-                width: 180px;
-            }
-            .beat:nth-child(1) { --radius: 150px; }
-            .beat:nth-child(2) { --radius: 150px; }
-            .beat:nth-child(3) { --radius: 150px; }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -576,12 +533,6 @@
                 height: 300px;
                 right: -75px;
             }
-            .beat {
-                width: 160px;
-            }
-            .beat:nth-child(1) { --radius: 100px; }
-            .beat:nth-child(2) { --radius: 100px; }
-            .beat:nth-child(3) { --radius: 100px; }
         }
     </style>
 </head>
@@ -742,7 +693,7 @@
         let snowflakes = [];
 
         function createSnowflakes() {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 100; i++) {
                 snowflakes.push({
                     x: Math.random() * window.innerWidth,
                     y: Math.random() * window.innerHeight,
@@ -761,10 +712,9 @@
 
         let lastTime = 0;
         function updateSnow(timestamp) {
-            if (!snowCanvas.isConnected) return;
             if (!lastTime) lastTime = timestamp;
             const delta = timestamp - lastTime;
-            if (delta > 32) {
+            if (delta > 16) {
                 lastTime = timestamp;
                 ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
                 snowflakes.forEach(flake => {
@@ -783,7 +733,7 @@
         }
 
         function createParticles(container) {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = `${Math.random() * 100}vw`;
@@ -793,9 +743,7 @@
                 particle.style.setProperty('--dir-x', Math.random() * 2 - 1);
                 particle.style.setProperty('--dir-y', Math.random() * 2 - 1);
                 if (container.parentElement.classList.contains('beats-container')) {
-                    particle.style.background = 'linear-gradient(45deg, #66b3ff, #99ccff)';
-                    particle.style.width = '1px';
-                    particle.style.height = '1px';
+                    particle.style.background = 'linear-gradient(45deg, #87CEEB, #ADD8E6)';
                 } else if (container.parentElement.classList.contains('socials-container')) {
                     particle.style.background = 'linear-gradient(45deg, #66ff66, #90ee90)';
                 } else if (container.parentElement.classList.contains('about-container')) {
@@ -813,7 +761,7 @@
                 particle.style.position = 'absolute';
                 particle.style.width = '2px';
                 particle.style.height = '2px';
-                particle.style.background = 'linear-gradient(45deg, #66b3ff, #99ccff)';
+                particle.style.background = 'linear-gradient(45deg, #00ffcc, #00ccff)';
                 particle.style.borderRadius = '50%';
                 particle.style.left = `${rect.width / 2}px`;
                 particle.style.top = `${rect.height / 2}px`;
