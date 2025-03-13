@@ -472,7 +472,7 @@
 <body>
     <div class="background-container" id="background"></div>
     <canvas id="snow"></canvas>
-    <div class="blurred-bg"></div>
+    <div class="blurred-bg" id="blurred-bg"></div>
     <div class="intro" id="intro">
         <h1 onclick="enterSite()">NOFAL</h1>
         <div class="hint" id="hint">Click</div>
@@ -578,8 +578,10 @@
             document.body.style.overflow = "auto";
             isSectionOpen = true;
             const background = document.getElementById("background");
+            const blurredBg = document.getElementById("blurred-bg");
             const snowCanvas = document.getElementById("snow");
-            background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
+            background.style.display = "none"; // Скрываем фон главного меню
+            blurredBg.style.display = "none";  // Скрываем размытие
             snowCanvas.style.display = "none";
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
