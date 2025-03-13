@@ -166,7 +166,7 @@
         .beats-container::before {
             content: none;
         }
-        /* Яркий свет вместо солнца */
+        /* Яркий свет с затиханием */
         .beats-container .sun-glow {
             position: absolute;
             right: -150px;
@@ -175,14 +175,16 @@
             width: 300px;
             height: 500px;
             background: radial-gradient(
-                circle at center,
-                rgba(173, 216, 230, 1) 0%, /* Светло-синий яркий центр */
-                rgba(135, 206, 235, 0.6) 30%,
-                rgba(0, 191, 255, 0.3) 60%,
-                rgba(0, 191, 255, 0) 80% /* Затихает к середине */
+                circle at 100% 50%, /* Смещаем центр к правому краю для затихания влево */
+                #00B7EB 0%, /* Очень яркий синий центр */
+                rgba(0, 183, 235, 0.8) 20%,
+                rgba(0, 183, 235, 0.5) 40%,
+                rgba(0, 183, 235, 0.2) 60%,
+                transparent 80% /* Чёткое затихание к середине */
             );
             border-radius: 50%;
             z-index: 1;
+            filter: brightness(1.5); /* Усиливаем яркость */
         }
         .beats-container .particles {
             position: absolute;
@@ -195,9 +197,9 @@
             position: absolute;
             width: 1px;
             height: 1px;
-            background: linear-gradient(45deg, #87CEEB, #ADD8E6); /* Мягкий синий цвет */
+            background: linear-gradient(45deg, #87CEEB, #ADD8E6);
             border-radius: 50%;
-            animation: radiateFromSun 40s infinite linear;
+            animation: radiateFromSun 60s infinite linear; /* Ещё медленнее */
             opacity: 0.6;
             right: 0;
             top: 50%;
@@ -208,15 +210,15 @@
                 opacity: 0.8;
             }
             25% {
-                transform: translate(-20vw, -5vh) scale(1.2);
+                transform: translate(-20vw, -10vh) scale(1.2);
                 opacity: 0.7;
             }
             50% {
-                transform: translate(-40vw, 10vh) scale(1.5);
+                transform: translate(-40vw, 15vh) scale(1.5);
                 opacity: 0.6;
             }
             75% {
-                transform: translate(-60vw, -5vh) scale(1.3);
+                transform: translate(-60vw, -10vh) scale(1.3);
                 opacity: 0.4;
             }
             100% {
@@ -617,8 +619,8 @@
             for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.top = `calc(50% + ${Math.random() * 500 - 250}px)`;
-                particle.style.animationDuration = `${20 + Math.random() * 20}s`;
+                particle.style.top = `calc(50% + ${Math.random() * 600 - 300}px)`; /* Распределяем сверху до ±300px */
+                particle.style.animationDuration = `${30 + Math.random() * 30}s`; /* Увеличиваем диапазон для медленности */
                 particle.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(particle);
             }
