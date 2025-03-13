@@ -50,6 +50,7 @@
             cursor: pointer;
             opacity: 0;
             animation: fadeIn 2s forwards, neonFlicker 3s infinite;
+            text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa; /* Яркий неоновый эффект */
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -166,7 +167,7 @@
         .beats-container::before {
             content: none;
         }
-        /* Яркий свет с затиханием */
+        /* Очень яркий свет в стиле NOFAL */
         .beats-container .sun-glow {
             position: absolute;
             right: -150px;
@@ -175,16 +176,17 @@
             width: 300px;
             height: 500px;
             background: radial-gradient(
-                circle at 100% 50%, /* Смещаем центр к правому краю для затихания влево */
-                #00B7EB 0%, /* Очень яркий синий центр */
-                rgba(0, 183, 235, 0.8) 20%,
-                rgba(0, 183, 235, 0.5) 40%,
-                rgba(0, 183, 235, 0.2) 60%,
-                transparent 80% /* Чёткое затихание к середине */
+                circle at 100% 50%,
+                #00ffcc 0%, /* Цвет как у NOFAL */
+                rgba(0, 255, 204, 0.9) 20%,
+                rgba(0, 255, 204, 0.7) 40%,
+                rgba(0, 255, 204, 0.4) 60%,
+                rgba(0, 255, 204, 0.1) 80%,
+                transparent 100%
             );
             border-radius: 50%;
             z-index: 1;
-            filter: brightness(1.5); /* Усиливаем яркость */
+            filter: brightness(2) drop-shadow(0 0 20px #00ffcc) drop-shadow(0 0 40px #00ffaa); /* Неоновый эффект */
         }
         .beats-container .particles {
             position: absolute;
@@ -199,31 +201,31 @@
             height: 1px;
             background: linear-gradient(45deg, #87CEEB, #ADD8E6);
             border-radius: 50%;
-            animation: radiateFromSun 60s infinite linear; /* Ещё медленнее */
+            animation: radiateFromSun 90s infinite linear;
             opacity: 0.6;
-            right: 0;
-            top: 50%;
+            right: calc(-150px + 50px); /* Начало в районе свечения */
+            top: calc(50% + 100px * (Math.random() - 0.5)); /* В пределах ±100px по вертикали */
         }
         @keyframes radiateFromSun {
             0% {
                 transform: translate(0, 0) scale(1);
-                opacity: 0.8;
+                opacity: 0.6;
             }
             25% {
-                transform: translate(-20vw, -10vh) scale(1.2);
-                opacity: 0.7;
+                transform: translate(-10vw, -5vh) scale(1.2);
+                opacity: 0.6;
             }
             50% {
-                transform: translate(-40vw, 15vh) scale(1.5);
+                transform: translate(-20vw, 5vh) scale(1.5);
                 opacity: 0.6;
             }
             75% {
-                transform: translate(-60vw, -10vh) scale(1.3);
-                opacity: 0.4;
+                transform: translate(-30vw, -5vh) scale(1.3);
+                opacity: 0.6;
             }
             100% {
-                transform: translate(-80vw, 0) scale(1);
-                opacity: 0;
+                transform: translate(-40vw, 0) scale(1);
+                opacity: 0.6;
             }
         }
         .beats-container {
@@ -428,6 +430,9 @@
                 height: 350px;
                 right: -100px;
             }
+            .beats-container .particle {
+                right: calc(-100px + 50px);
+            }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -441,6 +446,9 @@
                 width: 150px;
                 height: 250px;
                 right: -75px;
+            }
+            .beats-container .particle {
+                right: calc(-75px + 50px);
             }
         }
     </style>
@@ -619,9 +627,10 @@
             for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.top = `calc(50% + ${Math.random() * 600 - 300}px)`; /* Распределяем сверху до ±300px */
-                particle.style.animationDuration = `${30 + Math.random() * 30}s`; /* Увеличиваем диапазон для медленности */
-                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.right = `calc(-150px + ${Math.random() * 100}px)`; /* В пределах свечения */
+                particle.style.top = `calc(50% + ${Math.random() * 200 - 100}px)`; /* ±100px от центра */
+                particle.style.animationDuration = `${60 + Math.random() * 30}s`; /* 60-90s */
+                particle.style.animationDelay = `0s`; /* Без задержки */
                 container.appendChild(particle);
             }
         }
