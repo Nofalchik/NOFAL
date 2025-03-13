@@ -52,8 +52,8 @@
             animation: fadeIn 2s forwards, neonFlicker 3s infinite;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         @keyframes neonFlicker {
             0% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa; }
@@ -144,15 +144,13 @@
             padding: 80px 20px 20px;
             z-index: 5;
             opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out, background 0.5s ease-in-out;
+            transition: opacity 0.8s ease-in-out, background 0.5s ease-in-out; /* Убрал transform */
             pointer-events: none;
             overflow-y: auto;
-            background: none; /* По умолчанию без фона */
+            background: none;
         }
         .content-container.active {
             opacity: 1;
-            transform: translateY(0);
             pointer-events: auto;
         }
         /* Стили для Beats */
@@ -167,14 +165,14 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
+            z-index: 1; /* Ниже частиц */
         }
         .beats-container .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0; /* На уровне фона */
         }
         .beats-container .particle {
             position: absolute;
@@ -182,12 +180,14 @@
             height: 2px;
             background: linear-gradient(45deg, #ffd700, #ffffff);
             border-radius: 50%;
-            animation: float 10s infinite;
+            animation: floatDust 15s infinite linear;
         }
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
-            50% { transform: translateY(-20vh) translateX(10vw) scale(1.2); opacity: 0.4; }
-            100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
+        @keyframes floatDust {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            25% { transform: translate(-5vw, -10vh) scale(1.2); opacity: 0.6; }
+            50% { transform: translate(5vw, -20vh) scale(1.5); opacity: 0.4; }
+            75% { transform: translate(-3vw, -15vh) scale(1.3); opacity: 0.5; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
         }
         .beat {
             background: rgba(0, 0, 0, 0.5);
@@ -258,14 +258,14 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
+            z-index: 1; /* Ниже частиц */
         }
         .socials-container .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0; /* На уровне фона */
         }
         .socials-container {
             font-family: 'Montserrat', sans-serif;
@@ -307,9 +307,9 @@
         .socials-container a:hover { color: #66ff66; }
         .socials-container a:hover i { color: #66ff66; }
 
-        /* Остальные стили */
+        /* Стили для About */
         .about-container.active {
-            background: url('background.jpg') no-repeat center center / cover fixed; /* Или другой фон, если хочешь */
+            background: url('background.jpg') no-repeat center center / cover fixed;
         }
         .about-container::before {
             content: '';
@@ -319,14 +319,14 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
+            z-index: 1; /* Ниже частиц */
         }
         .about-container .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0; /* На уровне фона */
         }
         .about-container {
             font-family: 'Montserrat', sans-serif;
@@ -407,12 +407,12 @@
         <a href="#" onclick="showSection(event, this, 'beats')">Beats</a>
     </div>
     <div class="content-container about-container" id="about">
-        <div class="particles"></div> <!-- Частицы для About -->
+        <div class="particles"></div>
         <h1>About Me</h1>
         <p>I don't know, what if I'm a robot?</p>
     </div>
     <div class="content-container socials-container" id="socials">
-        <div class="particles"></div> <!-- Частицы для Socials -->
+        <div class="particles"></div>
         <h1>Socials</h1>
         <a href="https://www.instagram.com/nofalchk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
         <a href="https://www.youtube.com/@nofalchk" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
@@ -420,7 +420,7 @@
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <div class="content-container beats-container" id="beats">
-        <div class="particles"></div> <!-- Частицы для Beats -->
+        <div class="particles"></div>
         <div class="beat">
             <h3>Forest</h3>
             <audio preload="metadata">
@@ -581,12 +581,12 @@
         }
 
         function createParticles(container) {
-            for (let i = 0; i < 50; i++) { // 50 частиц на раздел
+            for (let i = 0; i < 100; i++) { // Увеличил до 100 частиц
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = `${Math.random() * 100}vw`;
                 particle.style.top = `${Math.random() * 100}vh`;
-                particle.style.animationDuration = `${5 + Math.random() * 10}s`;
+                particle.style.animationDuration = `${10 + Math.random() * 20}s`; // Более длинная анимация
                 particle.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(particle);
             }
