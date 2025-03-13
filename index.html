@@ -156,19 +156,22 @@
         /* Стили для Beats с исправленным фоном */
         .beats-container.active {
             background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
-            width: 100%; /* Убедимся, что занимает всю ширину */
-            min-height: 100vh; /* Убедимся, что занимает всю высоту */
-            z-index: -1; /* Поднимаем над .background-container */
+            width: 100%;
+            height: 100vh; /* Полная высота экрана */
+            position: fixed; /* Фиксируем на весь экран */
+            top: 0;
+            left: 0;
+            z-index: 0; /* Поднимаем выше .background-container и .blurred-bg */
         }
         .beats-container::before {
-            content: none; /* Убираем размытие */
+            content: none;
         }
         .beats-container .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1; /* Частицы над фоном */
         }
         .beats-container .particle {
             position: absolute;
@@ -190,8 +193,6 @@
             display: flex;
             justify-content: center;
             gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
             padding: 120px 20px 20px;
             position: relative;
             overflow: hidden;
@@ -503,7 +504,9 @@
             document.body.style.overflow = "auto";
             isSectionOpen = true;
             const background = document.getElementById("background");
+            const snowCanvas = document.getElementById("snow"); // Скрываем частицы
             background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
+            snowCanvas.style.display = "none"; // Отключаем частицы
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
 
