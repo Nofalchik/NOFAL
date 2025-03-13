@@ -50,7 +50,7 @@
             cursor: pointer;
             opacity: 0;
             animation: fadeIn 2s forwards, neonFlicker 3s infinite;
-            text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa; /* Яркий неоновый эффект */
+            text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffaa;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -167,7 +167,7 @@
         .beats-container::before {
             content: none;
         }
-        /* Очень яркий свет в стиле NOFAL */
+        /* Ещё ярче свечение */
         .beats-container .sun-glow {
             position: absolute;
             right: -150px;
@@ -177,7 +177,7 @@
             height: 500px;
             background: radial-gradient(
                 circle at 100% 50%,
-                #00ffcc 0%, /* Цвет как у NOFAL */
+                #00ffcc 0%,
                 rgba(0, 255, 204, 0.9) 20%,
                 rgba(0, 255, 204, 0.7) 40%,
                 rgba(0, 255, 204, 0.4) 60%,
@@ -186,7 +186,8 @@
             );
             border-radius: 50%;
             z-index: 1;
-            filter: brightness(2) drop-shadow(0 0 20px #00ffcc) drop-shadow(0 0 40px #00ffaa); /* Неоновый эффект */
+            filter: brightness(3) drop-shadow(0 0 20px #00ffcc) drop-shadow(0 0 40px #00ffaa) drop-shadow(0 0 60px #00ffdd); /* Усиленный неон */
+            box-shadow: 0 0 50px #00ffcc, 0 0 100px #00ffaa; /* Дополнительное свечение */
         }
         .beats-container .particles {
             position: absolute;
@@ -201,10 +202,10 @@
             height: 1px;
             background: linear-gradient(45deg, #87CEEB, #ADD8E6);
             border-radius: 50%;
-            animation: radiateFromSun 90s infinite linear;
+            animation: radiateFromSun 30s infinite linear; /* Ускоряем до 30-60 секунд */
             opacity: 0.6;
-            right: calc(-150px + 50px); /* Начало в районе свечения */
-            top: calc(50% + 100px * (Math.random() - 0.5)); /* В пределах ±100px по вертикали */
+            right: calc(-150px + 50px);
+            top: calc(50% + 100px * (Math.random() - 0.5));
         }
         @keyframes radiateFromSun {
             0% {
@@ -627,10 +628,10 @@
             for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.right = `calc(-150px + ${Math.random() * 100}px)`; /* В пределах свечения */
-                particle.style.top = `calc(50% + ${Math.random() * 200 - 100}px)`; /* ±100px от центра */
-                particle.style.animationDuration = `${60 + Math.random() * 30}s`; /* 60-90s */
-                particle.style.animationDelay = `0s`; /* Без задержки */
+                particle.style.right = `calc(-150px + ${Math.random() * 100}px)`;
+                particle.style.top = `calc(50% + ${Math.random() * 200 - 100}px)`;
+                particle.style.animationDuration = `${30 + Math.random() * 30}s`; /* 30-60 секунд */
+                particle.style.animationDelay = `0s`;
                 container.appendChild(particle);
             }
         }
