@@ -290,9 +290,13 @@
 
         /* Стили для Socials */
         .socials-container.active {
-            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%); /* Такой же фон, как в Beats */
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
         }
         .socials-container::before {
             content: '';
@@ -309,7 +313,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 2;
         }
         .socials-container .particle {
             position: absolute;
@@ -337,7 +341,7 @@
             color: #66ff66;
             margin: 0 0 20px 0;
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
         .socials-container a {
             display: flex;
@@ -349,7 +353,7 @@
             margin: 10px 0;
             transition: color 0.3s ease-in-out;
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
         .socials-container a i {
             margin-right: 10px;
@@ -362,9 +366,13 @@
 
         /* Стили для About */
         .about-container.active {
-            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%); /* Такой же фон, как в Beats */
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
         }
         .about-container::before {
             content: '';
@@ -381,7 +389,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 2;
         }
         .about-container .particle {
             position: absolute;
@@ -409,7 +417,7 @@
             color: #00ffcc;
             margin: 0 0 20px 0;
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
         .about-container p {
             font-size: 1.5rem;
@@ -417,7 +425,7 @@
             margin: 0 auto;
             line-height: 1.6;
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
 
         .touch-hint {
@@ -593,6 +601,7 @@
             document.querySelectorAll('.particles').forEach(p => {
                 p.innerHTML = '';
                 if (p.parentElement.id === sectionId) {
+                    console.log(`Creating particles for ${sectionId}`);
                     createParticles(p);
                 }
             });
