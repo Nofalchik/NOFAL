@@ -12,7 +12,6 @@
         body {
             font-family: 'Inter', sans-serif;
             color: #ffffff;
-            text-align: center;
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -22,8 +21,7 @@
             position: fixed;
             width: 100%;
             height: 100vh;
-            background: url('background.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background: url('background.jpg') no-repeat center center / cover;
             transition: transform 0.1s linear;
             z-index: -2;
         }
@@ -147,9 +145,10 @@
             z-index: 5;
             opacity: 0;
             transform: translateY(50px);
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out, background 0.5s ease-in-out;
             pointer-events: none;
             overflow-y: auto;
+            background: none; /* По умолчанию без фона */
         }
         .content-container.active {
             opacity: 1;
@@ -157,17 +156,8 @@
             pointer-events: auto;
         }
         /* Стили для Beats */
-        .beats-container {
-            font-family: 'Orbitron', sans-serif;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 120px 20px 20px;
-            background: url('background1.jpg') no-repeat center center / cover;
-            position: relative;
-            overflow: hidden;
+        .beats-container.active {
+            background: url('background1.jpg') no-repeat center center / cover fixed;
         }
         .beats-container::before {
             content: '';
@@ -176,9 +166,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Затемнение для читаемости */
-            backdrop-filter: blur(3px); /* Лёгкое размытие */
+            background: rgba(0, 0, 0, 0.5);
             z-index: 0;
+        }
+        .beats-container .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .beats-container .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #ffd700, #ffffff);
+            border-radius: 50%;
+            animation: float 10s infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
+            50% { transform: translateY(-20vh) translateX(10vw) scale(1.2); opacity: 0.4; }
+            100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
         }
         .beat {
             background: rgba(0, 0, 0, 0.5);
@@ -189,7 +198,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         .beat:hover {
             transform: scale(1.05);
@@ -238,6 +247,26 @@
         .beat:nth-child(3) .play-indicator { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
 
         /* Стили для Socials */
+        .socials-container.active {
+            background: url('background2.jpg') no-repeat center center / cover fixed;
+        }
+        .socials-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        .socials-container .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
         .socials-container {
             font-family: 'Montserrat', sans-serif;
             display: flex;
@@ -247,27 +276,15 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 120px 20px 20px;
-            background: url('background2.jpg') no-repeat center center / cover;
             position: relative;
             overflow: hidden;
-        }
-        .socials-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Затемнение для читаемости */
-            backdrop-filter: blur(3px); /* Лёгкое размытие */
-            z-index: 0;
         }
         .socials-container h1 {
             font-size: 3rem;
             color: #66ff66;
             margin: 0 0 20px 0;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         .socials-container a {
             display: flex;
@@ -279,7 +296,7 @@
             margin: 10px 0;
             transition: color 0.3s ease-in-out;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         .socials-container a i {
             margin-right: 10px;
@@ -291,6 +308,26 @@
         .socials-container a:hover i { color: #66ff66; }
 
         /* Остальные стили */
+        .about-container.active {
+            background: url('background.jpg') no-repeat center center / cover fixed; /* Или другой фон, если хочешь */
+        }
+        .about-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        .about-container .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
         .about-container {
             font-family: 'Montserrat', sans-serif;
         }
@@ -334,7 +371,7 @@
             100% { background-position: 0% 50%; }
         }
         @media (max-width: 768px) {
-            .beats-container, .socials-container { 
+            .beats-container, .socials-container, .about-container { 
                 padding: 100px 20px 20px; 
             }
             .beat h3 { font-size: 1.1rem; }
@@ -370,10 +407,12 @@
         <a href="#" onclick="showSection(event, this, 'beats')">Beats</a>
     </div>
     <div class="content-container about-container" id="about">
+        <div class="particles"></div> <!-- Частицы для About -->
         <h1>About Me</h1>
         <p>I don't know, what if I'm a robot?</p>
     </div>
     <div class="content-container socials-container" id="socials">
+        <div class="particles"></div> <!-- Частицы для Socials -->
         <h1>Socials</h1>
         <a href="https://www.instagram.com/nofalchk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
         <a href="https://www.youtube.com/@nofalchk" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
@@ -381,6 +420,7 @@
         <a href="https://t.me/nofalmusic" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
     </div>
     <div class="content-container beats-container" id="beats">
+        <div class="particles"></div> <!-- Частицы для Beats -->
         <div class="beat">
             <h3>Forest</h3>
             <audio preload="metadata">
@@ -484,6 +524,14 @@
             background.style.transform = `translate(${lastMoveX}px, ${lastMoveY}px)`;
             document.removeEventListener("mousemove", updateBackground);
             document.removeEventListener("touchmove", updateBackground);
+
+            // Очистка и создание частиц для текущего раздела
+            document.querySelectorAll('.particles').forEach(p => {
+                p.innerHTML = '';
+                if (p.parentElement.id === sectionId) {
+                    createParticles(p);
+                }
+            });
         }
 
         const snowCanvas = document.getElementById("snow");
@@ -530,6 +578,18 @@
                 });
             }
             requestAnimationFrame(updateSnow);
+        }
+
+        function createParticles(container) {
+            for (let i = 0; i < 50; i++) { // 50 частиц на раздел
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.animationDuration = `${5 + Math.random() * 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(particle);
+            }
         }
 
         createSnowflakes();
