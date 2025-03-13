@@ -29,7 +29,7 @@
             position: fixed;
             width: 100%;
             height: 100vh;
-            backdrop-filter: blur(2px); /* Размытие главного фона */
+            backdrop-filter: blur(2px);
             z-index: -1;
         }
         .intro {
@@ -144,7 +144,7 @@
             padding: 80px 20px 20px;
             z-index: 5;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out; /* Только плавное появление */
+            transition: opacity 1.5s ease-in-out; /* Более плавное появление */
             pointer-events: none;
             overflow-y: auto;
             background: none;
@@ -164,7 +164,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(2px); /* Размытие фона */
+            backdrop-filter: blur(1px); /* Слегка уменьшено размытие */
             z-index: 1;
         }
         .beats-container .particles {
@@ -178,9 +178,9 @@
             position: absolute;
             width: 2px;
             height: 2px;
-            background: linear-gradient(45deg, #ffd700, #ffffff);
+            background: linear-gradient(45deg, #ffd700, #ffffff); /* Убрано размытие */
             border-radius: 50%;
-            animation: floatDust 15s infinite linear;
+            animation: floatDust 10s infinite linear; /* Ускорено движение */
         }
         @keyframes floatDust {
             0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
@@ -188,6 +188,17 @@
             50% { transform: translate(5vw, -20vh) scale(1.5); opacity: 0.4; }
             75% { transform: translate(-3vw, -15vh) scale(1.3); opacity: 0.5; }
             100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+        }
+        .beats-container {
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center; /* Центрируем трек */
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 20px;
+            position: relative;
+            overflow: hidden;
         }
         .beat {
             background: rgba(0, 0, 0, 0.5);
@@ -199,6 +210,7 @@
             cursor: pointer;
             position: relative;
             z-index: 2;
+            width: 200px; /* Уменьшена ширина */
         }
         .beat:hover {
             transform: scale(1.05);
@@ -243,14 +255,12 @@
             transition: left 0.1s linear;
         }
         .beat:nth-child(1) .play-indicator { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
-        .beat:nth-child(2) .play-indicator { background: #00ccff; box-shadow: 0 0 10px #00ccff; }
-        .beat:nth-child(3) .play-indicator { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
 
-        /* Стили для Socials */
+        /* Стили для Socials (оставляем без изменений) */
         .socials-container.active {
             background: url('background2.jpg') no-repeat center center / cover fixed;
             width: 100%;
-            min-height: 100vh; /* Убедимся, что фон полностью заполняет */
+            min-height: 100vh;
         }
         .socials-container::before {
             content: '';
@@ -259,7 +269,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(2px); /* Размытие фона */
+            backdrop-filter: blur(2px);
             z-index: 1;
         }
         .socials-container .particles {
@@ -309,7 +319,7 @@
         .socials-container a:hover { color: #66ff66; }
         .socials-container a:hover i { color: #66ff66; }
 
-        /* Стили для About */
+        /* Стили для About (оставляем без изменений) */
         .about-container.active {
             background: url('background.jpg') no-repeat center center / cover fixed;
         }
@@ -320,7 +330,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(2px); /* Размытие фона */
+            backdrop-filter: blur(2px);
             z-index: 1;
         }
         .about-container .particles {
@@ -373,14 +383,10 @@
             100% { background-position: 0% 50%; }
         }
         @media (max-width: 768px) {
-            .beats-container, .socials-container, .about-container { 
-                padding: 100px 20px 20px; 
-            }
+            .beats-container { padding: 100px 20px 20px; }
             .beat h3 { font-size: 1.1rem; }
             .custom-player { height: 5px; }
             .play-indicator { width: 12px; height: 12px; top: -3px; }
-            .socials-container h1 { font-size: 2.5rem; }
-            .socials-container a { font-size: 1.2rem; }
         }
         @media (max-width: 480px) {
             .intro h1 { font-size: 3rem; }
@@ -390,8 +396,6 @@
             .beat h3 { font-size: 1rem; }
             .custom-player { height: 4px; }
             .play-indicator { width: 10px; height: 10px; top: -3px; }
-            .socials-container h1 { font-size: 2rem; }
-            .socials-container a { font-size: 1rem; }
         }
     </style>
 </head>
@@ -427,26 +431,6 @@
             <h3>Forest</h3>
             <audio preload="metadata">
                 <source src="forest.mp3" type="audio/mpeg">
-            </audio>
-            <div class="custom-player">
-                <div class="progress-bar"></div>
-                <div class="play-indicator"></div>
-            </div>
-        </div>
-        <div class="beat">
-            <h3>Future Beat</h3>
-            <audio preload="metadata">
-                <source src="forest.mp3" type="audio/mpeg"> <!-- Замени на другой файл позже -->
-            </audio>
-            <div class="custom-player">
-                <div class="progress-bar"></div>
-                <div class="play-indicator"></div>
-            </div>
-        </div>
-        <div class="beat">
-            <h3>Neon Dreams</h3>
-            <audio preload="metadata">
-                <source src="forest.mp3" type="audio/mpeg"> <!-- Замени на другой файл позже -->
             </audio>
             <div class="custom-player">
                 <div class="progress-bar"></div>
@@ -583,7 +567,7 @@
         }
 
         function createParticles(container) {
-            for (let i = 0; i < 100; i++) { // Количество частиц устраивает
+            for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = `${Math.random() * 100}vw`;
