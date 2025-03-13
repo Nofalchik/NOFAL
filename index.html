@@ -167,7 +167,7 @@
         .beats-container::before {
             content: none;
         }
-        /* Очень размытое свечение */
+        /* Очень размытое свечение без круга в центре */
         .beats-container .sun-glow {
             position: absolute;
             right: -150px;
@@ -177,14 +177,13 @@
             height: 500px;
             background: radial-gradient(
                 circle at 50% 50%,
-                rgba(0, 255, 204, 0.3) 0%, /* Очень слабая яркость в центре */
-                rgba(0, 255, 204, 0.1) 10%,
-                transparent 20% /* Быстрое затухание */
+                rgba(0, 255, 204, 0.1) 0%, /* Очень слабая яркость */
+                transparent 10% /* Быстрое затухание для полного размытия */
             );
             border-radius: 50%;
             z-index: 1;
-            filter: brightness(3) drop-shadow(0 0 20px #00ffcc) drop-shadow(0 0 40px #00ffaa) drop-shadow(0 0 60px #00ffdd);
-            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2), 0 0 100px rgba(0, 255, 204, 0.1);
+            filter: brightness(4) drop-shadow(0 0 30px #00ffcc) drop-shadow(0 0 50px #00ffaa) drop-shadow(0 0 70px #00ffdd); /* Усиленное свечение */
+            box-shadow: 0 0 70px rgba(0, 255, 204, 0.3), 0 0 120px rgba(0, 255, 204, 0.2); /* Усиленное рассеивание */
         }
         .beats-container .particles {
             position: absolute;
@@ -199,7 +198,7 @@
             height: 1px;
             background: linear-gradient(45deg, #87CEEB, #ADD8E6);
             border-radius: 50%;
-            animation: floatRandomly 60s infinite linear; /* Случайное движение */
+            animation: floatRandomly 60s infinite linear;
             opacity: 0.6;
         }
         @keyframes floatRandomly {
@@ -613,15 +612,15 @@
         }
 
         function createParticles(container) {
-            for (let i = 0; i < 100; i++) { /* Уменьшил до 100 частиц */
+            for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = `${Math.random() * 100}vw`;
                 particle.style.top = `${Math.random() * 100}vh`;
                 particle.style.animationDuration = `${60 + Math.random() * 60}s`;
                 particle.style.animationDelay = `0s`;
-                particle.style.setProperty('--dir-x', Math.random() * 2 - 1); /* Случайное направление по X */
-                particle.style.setProperty('--dir-y', Math.random() * 2 - 1); /* Случайное направление по Y */
+                particle.style.setProperty('--dir-x', Math.random() * 2 - 1);
+                particle.style.setProperty('--dir-y', Math.random() * 2 - 1);
                 container.appendChild(particle);
             }
         }
